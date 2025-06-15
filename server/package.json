@@ -8,9 +8,9 @@
     "dev": "nodemon ./src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vardhan Ganugula",
   "license": "ISC",
-  "description": "",
+  "description": "foxy url - link connect organize",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
