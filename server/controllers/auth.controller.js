@@ -241,5 +241,3 @@ export const handleChangePassword = async (req, res) => {
 
   return res.status(200).json({ message: "Password changed successfully", status: true });
 }
-
-// $2b$10$FKIw3r5pQKykelNYgIx9YON1eTSODeR4/Nmc1B7rndsKo/c3w30Ku
