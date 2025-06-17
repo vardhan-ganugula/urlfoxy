@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose"; 
 
 const sessionSchema = new Schema({
-    userId : {
+    userId: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
-    }, 
+    },
     valid: {
         type: Boolean,
         default: true,
@@ -15,6 +15,10 @@ const sessionSchema = new Schema({
         required: true,
     },
     ipAddress: {
+        type: String,
+        required: true,
+    },
+    device: {
         type: String,
         required: true,
     },

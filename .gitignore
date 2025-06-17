@@ -3,3 +3,4 @@ design
 */node_modules
 client/dist 
 *.env
+.temp

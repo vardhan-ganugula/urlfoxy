@@ -1,35 +1,37 @@
 import { Schema, model } from "mongoose";
 
 const authSchema = new Schema({
-    username: {
+    email : {
         type: String,
         required: true,
         unique: true,
+        trim: true,
     },
     password: {
         type: String,
         required: true,
-        select : false,
+        trim: true,
     },
-    email: {
+    userType: {
         type: String,
-        required: true,
-        unique: true,
+        enum: ["admin", "user"],
+        default: "user",
     },
-    type: {
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user',
-    },
-    forgotPasswordToken: {
+    isEmailVerified: {
+        type: Boolean,
+        default: false,
+    }, 
+    emailVerificationToken: {
         type: String,
         default: null,
-        select: false,
     },
-    forgotPasswordExpiry: {
-        type: Date,
-        default: null,
-        select: false,
+    displayName: {
+        type: String,
+        default: "User",
+    },
+    credits: {
+        type: Number,
+        default: 0,
     },
     profileURL:{
         type: String,
