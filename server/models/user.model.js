@@ -25,7 +25,7 @@ const authSchema = new Schema({
         type: String,
         default: null,
     },
-    displayName: {
+    username: {
         type: String,
         default: "User",
     },
