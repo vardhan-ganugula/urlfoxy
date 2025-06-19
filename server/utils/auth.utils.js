@@ -15,8 +15,8 @@ export const comparePassword = async (password, hashedPassword) => {
 } 
 
 export const generateToken = () => {
-    const sessionId = crypto.randomBytes(16).toString("hex");
-    return sessionId;
+    const token = crypto.randomBytes(16).toString("hex");
+    return token;
 }
 
 export const generateAccessToken = (user) => {
@@ -38,3 +38,4 @@ export const decodeJWTtoken = (token) => {
         return null;
     }
 };
+

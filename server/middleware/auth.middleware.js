@@ -1,5 +1,5 @@
 import { decode } from "jsonwebtoken";
-import authModel from "../models/auth.model.js";
+import authModel from "../models/user.model.js";
 import sessionModel from "../models/session.model.js";
 import { decodeJWTtoken, generateAccessToken } from "../utils/auth.utils.js";
 import { ACCESS_TOKEN_EXPIRATION, cookieOptions, REFRESH_TOKEN_EXPIRATION } from "../utils/constants.js";

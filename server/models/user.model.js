@@ -11,6 +11,7 @@ const authSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        select : false
     },
     userType: {
         type: String,
@@ -24,6 +25,12 @@ const authSchema = new Schema({
     emailVerificationToken: {
         type: String,
         default: null,
+        select : false
+    },
+    emailVerificationExpiry : {
+        type : Date,
+        default : Date.now() + 15*60*1000,
+        select : false
     },
     username: {
         type: String,

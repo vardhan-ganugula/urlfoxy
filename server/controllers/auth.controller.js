@@ -1,4 +1,4 @@
-import authModel from "../models/auth.model.js";
+import userModel from "../models/user.model.js";
 import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
 import {
   comparePassword,
@@ -16,6 +16,8 @@ import {
   REFRESH_TOKEN_EXPIRATION,
 } from "../utils/constants.js";
 import { sendForgortPasswordEmail } from "../utils/mail.util.js";
+import emailQueue from '../queues/email.queue.js'
+
 
 export const handleUserSignUp = async (req, res) => {
   const data = req.body;
@@ -26,44 +28,42 @@ export const handleUserSignUp = async (req, res) => {
   const { username, email, password } = response.data;
 
   try {
-    const existingUser = await authModel.findOne({ email });
+    const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(409).json({ error: "User already exists" });
     }
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
   const hashedPassword = await hashPassword(password);
-  const newUser = await authModel.create({
-    username,
+  const token = generateToken();
+  let newUser;
+  try {
+    newUser = await userModel.create({
+      username,
+      email,
+      password: hashedPassword,
+      emailVerificationToken : token,
+      emailVerificationExpiry: Date.now() + 15*60*1000
+    });
+  } catch (error) {
+    return res.status(409).json({
+      status: 'error',
+      message: error?.message
+    })
+  }
+  await emailQueue.add('sending confirmation email', {
     email,
-    password: hashedPassword,
-  });
-
-  const sessionId = await sessionModel.create({
-    userId: newUser._id,
-    userAgent: req.headers["user-agent"],
-    ipAddress: req.ip,
-  });
-
-  const accessToken = generateAccessToken({
-    id: newUser._id,
-    sessionId: sessionId._id,
-    username: newUser.username,
-    role: newUser.role,
-  });
-
-  const refreshToken = generateRefreshToken({
-    id: newUser._id,
-    sessionId: sessionId._id,
-  });
-  const accessCookieOption = cookieOptions(ACCESS_TOKEN_EXPIRATION);
-  const refreshCookieOption = cookieOptions(REFRESH_TOKEN_EXPIRATION);
-  res.cookie("accessToken", accessToken, accessCookieOption);
-  res.cookie("refreshToken", refreshToken, refreshCookieOption);
+    token
+  }, {
+    removeOnComplete : true,
+    removeOnFail : {
+      count: 5
+    }
+  })
 
   return res.status(201).json({
-    message: "User registered successfully",
+    message: "User registered successfully check you email",
     status: true,
     data: {
       id: newUser._id,
@@ -240,4 +240,14 @@ export const handleChangePassword = async (req, res) => {
   }
 
   return res.status(200).json({ message: "Password changed successfully", status: true });
+}
+
+export const sendVerificationEmail = async(req, res) => {
+  const {email} = req.body;
+  if(!email){
+    return res.status(400).json({
+      status: 'error',
+      message : 'email is required'
+    })
+  }
 }
