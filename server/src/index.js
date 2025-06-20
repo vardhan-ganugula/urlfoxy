@@ -7,6 +7,7 @@ import {connectDB} from '../utils/DB.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { authMiddleware } from '../middleware/auth.middleware.js';
+import {authRateLimit} from '../utils/rateLimit.util.js';
 
 config();
 connectDB();
@@ -21,7 +22,7 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use('/api/auth', authRoute);
+app.use('/api/auth',authRateLimit, authRoute);
 app.use('/api/user',authMiddleware, userRoute);
 
 

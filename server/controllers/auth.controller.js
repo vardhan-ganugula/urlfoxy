@@ -16,8 +16,8 @@ import {
   REFRESH_TOKEN_EXPIRATION,
 } from "../utils/constants.js";
 import { sendForgortPasswordEmail } from "../utils/mail.util.js";
-import emailQueue from '../queues/email.queue.js'
-
+import emailQueue from "../queues/email.queue.js";
+import { VERIFICATION_EXPIRY_TIME } from "../utils/constants.js";
 
 export const handleUserSignUp = async (req, res) => {
   const data = req.body;
@@ -26,7 +26,7 @@ export const handleUserSignUp = async (req, res) => {
     return res.status(404).json({ error: response.error.errors[0].message });
   }
   const { username, email, password } = response.data;
-
+  // check for existing user
   try {
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
@@ -35,6 +35,7 @@ export const handleUserSignUp = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
+  // generate hashpassword
   const hashedPassword = await hashPassword(password);
   const token = generateToken();
   let newUser;
@@ -43,24 +44,30 @@ export const handleUserSignUp = async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      emailVerificationToken : token,
-      emailVerificationExpiry: Date.now() + 15*60*1000
+      emailVerificationToken: token,
+      emailVerificationExpiry: Date.now() + VERIFICATION_EXPIRY_TIME,
     });
   } catch (error) {
     return res.status(409).json({
-      status: 'error',
-      message: error?.message
-    })
+      status: "error",
+      message: error?.message,
+    });
   }
-  await emailQueue.add('sending confirmation email', {
-    email,
-    token
-  }, {
-    removeOnComplete : true,
-    removeOnFail : {
-      count: 5
+  // add to email process queue
+
+  await emailQueue.add(
+    "send-vefification-email",
+    {
+      email,
+      token,
+    },
+    {
+      removeOnComplete: true,
+      removeOnFail: {
+        count: 5,
+      },
     }
-  })
+  );
 
   return res.status(201).json({
     message: "User registered successfully check you email",
@@ -200,54 +207,126 @@ export const handleUserForgotPassword = async (req, res) => {
   }
 
   await sendForgortPasswordEmail(email, forgotToken);
- 
+
   return res.status(200).json({
     message: "Forgot password email sent successfully",
     status: true,
   });
 };
 
-
 export const handleChangePassword = async (req, res) => {
   const { email, password, token } = req.body;
-  if(!email || !password || !token) {
-    return res.status(400).json({ error: "Email, password and token are required" });
+  if (!email || !password || !token) {
+    return res
+      .status(400)
+      .json({ error: "Email, password and token are required" });
   }
 
   try {
-    const user = await authModel.findOne({email, forgotPasswordToken:token, forgotPasswordExpiry : {
-      $gt: Date.now()
-    }})
-    if(!user) {
-      return res.status(400).json({ error: "Invalid token or token expired", status: false });
+    const user = await authModel.findOne({
+      email,
+      forgotPasswordToken: token,
+      forgotPasswordExpiry: {
+        $gt: Date.now(),
+      },
+    });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "Invalid token or token expired", status: false });
     }
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
-    
   }
   const hashedPassword = await hashPassword(password);
   try {
-    await authModel.updateOne({email}, {
-      $set: {
-        password: hashedPassword,
-        forgotPasswordToken: null,
-        forgotPasswordExpiry: null
+    await authModel.updateOne(
+      { email },
+      {
+        $set: {
+          password: hashedPassword,
+          forgotPasswordToken: null,
+          forgotPasswordExpiry: null,
+        },
       }
-    })
+    );
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
-    
   }
 
-  return res.status(200).json({ message: "Password changed successfully", status: true });
-}
+  return res
+    .status(200)
+    .json({ message: "Password changed successfully", status: true });
+};
 
-export const sendVerificationEmail = async(req, res) => {
-  const {email} = req.body;
-  if(!email){
+export const sendVerificationEmail = async (req, res) => {
+  const email = req.body?.email;
+  if (!email) {
     return res.status(400).json({
+      status: "error",
+      message: "email is required",
+    });
+  }
+  const token = generateToken();
+
+  try {
+    const result = await userModel.findOne({email});
+    if(!result){
+      return res.status(404).json({status: 'error', message: 'user not found'})
+    }    
+  } catch (error) {
+    res.status(500).json({
       status: 'error',
-      message : 'email is required'
+      message: error.message,
     })
   }
-}
+
+  try {
+    const result = await userModel.updateOne(
+      {
+        email,
+        emailVerificationExpiry: {
+          $lt: Date.now(),
+        },
+      },
+      {
+        emailVerificationToken: token,
+        emailVerificationExpiry: Date.now() + VERIFICATION_EXPIRY_TIME,
+      }
+    );
+    // if modified is zero which means the verificationExpiry is stil exists
+    if (result.modifiedCount === 0) {
+      return res.status(400).json({
+        status: "error",
+        message: "An email is already sent. Wait 15 minutes for new one",
+      });
+    }
+// add to email process queue
+    await emailQueue.add(
+      "sending confirmation email",
+      {
+        email,
+        token,
+      },
+      {
+        removeOnComplete: true,
+        removeOnFail: {
+          count: 5,
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: "error",
+      message: error?.message || "internal server error",
+    });
+  }
+
+  return res.status(202).json({
+    status: "success",
+    message: "Verification email sent successfully",
+  });
+};
+
+// TODO: add a route to verify email
