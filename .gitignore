@@ -4,3 +4,5 @@ design
 client/dist 
 *.env
 .temp
+docker-compose.yml
+.gitignore

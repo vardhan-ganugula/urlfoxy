@@ -18,6 +18,7 @@ import {
 import { sendForgortPasswordEmail } from "../utils/mail.util.js";
 import emailQueue from "../queues/email.queue.js";
 import { VERIFICATION_EXPIRY_TIME } from "../utils/constants.js";
+import DeviceDetector from "node-device-detector";
 
 export const handleUserSignUp = async (req, res) => {
   const data = req.body;
@@ -91,7 +92,7 @@ export const handleUserLogin = async (req, res) => {
   let userDetails;
   const { email, password } = response.data;
   try {
-    const user = await authModel.findOne({ email }).select("+password");
+    const user = await userModel.findOne({ email }).select("+password");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -106,12 +107,23 @@ export const handleUserLogin = async (req, res) => {
   if (!isPasswordValid) {
     return res.status(401).json({ error: "Invalid password" });
   }
-
+  const userAgent = req.headers["user-agent"];
+  const detector = new DeviceDetector({
+    clientIndexes: true,
+    deviceIndexes: true,
+    osIndexes: true,
+    deviceAliasCode: false,
+    deviceTrusted: false,
+    deviceInfo: false,
+    maxUserAgentSize: 500,
+  });
+  const device = detector?.os?.name || 'Unknown';
   try {
     sessionDetails = await sessionModel.create({
       userId: userDetails._id,
-      userAgent: req.headers["user-agent"],
+      userAgent,
       ipAddress: req.ip,
+      device,
     });
   } catch (error) {
     return res.status(500).json({
@@ -119,7 +131,6 @@ export const handleUserLogin = async (req, res) => {
       message: "error while creating session",
     });
   }
-
   const accessToken = generateAccessToken({
     id: userDetails._id,
     sessionId: sessionDetails._id,
@@ -136,15 +147,11 @@ export const handleUserLogin = async (req, res) => {
   const refreshCookieOption = cookieOptions(REFRESH_TOKEN_EXPIRATION);
   res.cookie("accessToken", accessToken, accessCookieOption);
   res.cookie("refreshToken", refreshToken, refreshCookieOption);
+  const { password: noNeed, ...userWithoutPassword } = userDetails.toObject();
   return res.status(200).json({
     message: "User logged in successfully",
     status: true,
-    data: {
-      id: userDetails._id,
-      username: userDetails.username,
-      email: userDetails.email,
-      role: userDetails.role,
-    },
+    data: userWithoutPassword,
   });
 };
 
@@ -355,12 +362,11 @@ export const handleVerifyUser = async (req, res) => {
       { new: true }
     );
 
-    if(!result){
-
+    if (!result) {
       return res.status(400).json({
-        status : 'success',
-        message: 'Expired Token or Already Verified'
-      })
+        status: "success",
+        message: "Expired Token or Already Verified",
+      });
     }
 
     return res

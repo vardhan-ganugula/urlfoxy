@@ -21,6 +21,7 @@
     "express-rate-limit": "^7.5.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.0",
+    "node-device-detector": "^2.2.2",
     "nodemailer": "^7.0.3",
     "path": "^0.12.7",
     "zod": "^3.25.23"
