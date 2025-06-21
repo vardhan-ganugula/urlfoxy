@@ -31,7 +31,7 @@ export const sendForgortPasswordEmail = async (email, token) => {
 
 export const sendConfirmationEmail = async (email, token) => {
     try {
-        const response = await transporter.sendMail({
+        await transporter.sendMail({
             from : mailConfig.auth.user,
             to : email,
             subject : "Click here to verify your Account",
@@ -48,7 +48,7 @@ export const sendConfirmationEmail = async (email, token) => {
 
             `
         });
-        console.log(response)
+        console.log(`A verification email sent to ${email}`)
     } catch (error) {
         console.log(error)
     }

@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { authMiddleware } from '../middleware/auth.middleware.js';
 import {authRateLimit} from '../utils/rateLimit.util.js';
+import { runEmailWorker } from '../jobs/email.jobs.js';
 
 config();
 connectDB();
@@ -21,7 +22,7 @@ app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true,
 }));
-
+runEmailWorker();
 app.use('/api/auth',authRateLimit, authRoute);
 app.use('/api/user',authMiddleware, userRoute);
 

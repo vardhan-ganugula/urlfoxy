@@ -270,15 +270,17 @@ export const sendVerificationEmail = async (req, res) => {
   const token = generateToken();
 
   try {
-    const result = await userModel.findOne({email});
-    if(!result){
-      return res.status(404).json({status: 'error', message: 'user not found'})
-    }    
+    const result = await userModel.findOne({ email });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "user not found" });
+    }
   } catch (error) {
     res.status(500).json({
-      status: 'error',
+      status: "error",
       message: error.message,
-    })
+    });
   }
 
   try {
@@ -301,7 +303,7 @@ export const sendVerificationEmail = async (req, res) => {
         message: "An email is already sent. Wait 15 minutes for new one",
       });
     }
-// add to email process queue
+    // add to email process queue
     await emailQueue.add(
       "sending confirmation email",
       {
@@ -329,4 +331,49 @@ export const sendVerificationEmail = async (req, res) => {
   });
 };
 
-// TODO: add a route to verify email
+export const handleVerifyUser = async (req, res) => {
+  const token = req.body.token;
+  if (!token) {
+    return res.status(404).json({
+      status: "error",
+      message: "Verification Token not found",
+    });
+  }
+
+  try {
+    const result = await userModel.findOneAndUpdate(
+      {
+        emailVerificationToken: token,
+        isEmailVerified: false,
+        emailVerificationExpiry: {
+          $gt: Date.now(),
+        },
+      },
+      {
+        isEmailVerified: true,
+      },
+      { new: true }
+    );
+
+    if(!result){
+
+      return res.status(400).json({
+        status : 'success',
+        message: 'Expired Token or Already Verified'
+      })
+    }
+
+    return res
+      .json({
+        status: "success",
+        message: "User Verified Successfully",
+        user: result,
+      })
+      .status(200);
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: error?.message,
+    });
+  }
+};
