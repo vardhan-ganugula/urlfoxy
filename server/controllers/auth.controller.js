@@ -16,12 +16,10 @@ import {
   FORGOT_PASSWORD_EXPIRY,
   REFRESH_TOKEN_EXPIRATION,
 } from "../utils/constants.js";
-import { sendForgortPasswordEmail } from "../utils/mail.util.js";
 import emailQueue from "../queues/email.queue.js";
 import { VERIFICATION_EXPIRY_TIME } from "../utils/constants.js";
 import DeviceDetector from "node-device-detector";
 import forgotPasswordModel from "../models/forgotPassword.model.js";
-import { forgotPasswordEmailTemplate } from "../utils/emailTemplates.js";
 
 export const handleUserSignUp = async (req, res) => {
   const data = req.body;
@@ -167,7 +165,6 @@ export const handleUserLogout = async (req, res) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  console.log("refreshToken", refreshToken);
   const decoded = decodeJWTtoken(refreshToken);
   try {
     const result = await sessionModel.deleteOne({ _id: decoded.sessionId });
@@ -346,7 +343,6 @@ export const sendVerificationEmail = async (req, res) => {
       }
     );
     // if modified is zero which means the verificationExpiry is stil exists
-    console.log(result)
     if (result.modifiedCount === 0) {
       return res.status(400).json({
         status: "error",

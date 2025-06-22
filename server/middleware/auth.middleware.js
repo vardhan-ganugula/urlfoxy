@@ -7,54 +7,53 @@ import { ACCESS_TOKEN_EXPIRATION, cookieOptions, REFRESH_TOKEN_EXPIRATION } from
 export const authMiddleware = async (req, res, next) => {
   const { accessToken, refreshToken } = req.cookies;
   if (!accessToken && !refreshToken) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ status: 'error', message: "Unauthorized" });
   }
   if (accessToken && accessToken !== "undefined") {
     const decoded = decodeJWTtoken(accessToken);
     try {
       const session = await sessionModel.findOne({ _id: decoded.sessionId });
       if (!session) {
-        return res.status(401).json({ error: "Unauthorized", status: "false" });
+        return res.status(401).json({ message: "Unauthorized", status: "error" });
       }
     } catch (error) {
       console.log("error", error);
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ status: 'error', message: "Unauthorized" });
     }
 
     try {
       const user = await authModel.findOne({ _id: decoded.id });
       if (!user) {
-        return res.status(401).json({ error: "Unauthorized" });
+        return res.status(401).json({ status :"error", message: "Unauthorized" });
       }
       req.user = user;
     } catch (error) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ status: 'error', message: "Unauthorized" });
     }
     next();
   }
 
 
   if (!accessToken && refreshToken) {
-    console.log("refreshToken", refreshToken);
     const decoded = decodeJWTtoken(refreshToken);
     try {
       const session = await sessionModel.findOne({ _id: decoded.sessionId });
       if (!session) {
-        return res.status(401).json({ error: "Unauthorized", status: "false" });
+        return res.status(401).json({ message: "Unauthorized", status: "error" });
       }
     } catch (error) {
       console.log("error", error);
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ status: 'error', message: "Unauthorized" });
     }
 
     try {
       const user = await authModel.findOne({ _id: decoded.id });
       if (!user) {
-        return res.status(401).json({ error: "Unauthorized" });
+        return res.status(401).json({ status: 'error', message: "Unauthorized" });
       }
       req.user = user;
     } catch (error) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ status: 'error', message: "Unauthorized" });
     }
 
     try {
@@ -64,7 +63,6 @@ export const authMiddleware = async (req, res, next) => {
         userAgent: req.headers["user-agent"],
         ipAddress: req.ip,
       });
-      console.log("newSession", newSession);
 
         const newAccessToken = generateAccessToken({
             id: decoded.id,
@@ -83,7 +81,7 @@ export const authMiddleware = async (req, res, next) => {
         res.cookie("refreshToken", newRefreshToken, refreshCookieOption);
 
     } catch (error) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ status: 'error' , message: "Unauthorized" });
     }
     next();
   }
