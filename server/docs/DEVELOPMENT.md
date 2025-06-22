@@ -44,7 +44,7 @@ This guide covers the development workflow, coding standards, and best practices
 ```bash
 # Clone the repository
 git clone https://github.com/vardhan-ganugula/urlfoxy
-cd saas-project/server
+cd urlfoxy/server
 
 # Install dependencies
 npm install

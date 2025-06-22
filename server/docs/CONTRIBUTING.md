@@ -55,7 +55,7 @@ Before contributing, ensure you have:
 2. **Clone your fork** locally:
    ```bash
    git clone https://github.com/vardhan-ganugula/urlfoxy
-   cd saas-project/server
+   cd urlfoxy/server
    ```
 3. **Add upstream remote**:
    ```bash

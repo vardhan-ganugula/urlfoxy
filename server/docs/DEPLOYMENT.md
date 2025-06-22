@@ -27,7 +27,7 @@ The project includes a `docker-compose.yml` file for easy deployment.
 ```bash
 # Clone the repository
 git clone https://github.com/vardhan-ganugula/urlfoxy
-cd saas-project
+cd urlfoxy
 
 # Build and start services
 docker-compose up -d
@@ -159,7 +159,7 @@ sudo npm install -g pm2
 
 # Clone and setup project
 git clone https://github.com/vardhan-ganugula/urlfoxy
-cd saas-project/server
+cd urlfoxy/server
 npm install
 
 # Configure environment
@@ -206,7 +206,7 @@ sudo systemctl enable redis-server
 
 # Setup application
 git clone https://github.com/vardhan-ganugula/urlfoxy
-cd saas-project/server
+cd urlfoxy/server
 npm install
 
 # Configure environment
