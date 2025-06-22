@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "Vardhan Ganugula",
   "license": "ISC",
-  "description": "foxy url - link connect organize",
+  "description": "UrlFox url - link connect organize",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "bullmq": "^5.54.3",
