@@ -11,6 +11,7 @@ import {
 import sessionModel from "../models/session.model.js";
 import {
   ACCESS_TOKEN_EXPIRATION,
+  CLIENT_URL,
   cookieOptions,
   FORGOT_PASSWORD_EXPIRY,
   REFRESH_TOKEN_EXPIRATION,
@@ -19,6 +20,8 @@ import { sendForgortPasswordEmail } from "../utils/mail.util.js";
 import emailQueue from "../queues/email.queue.js";
 import { VERIFICATION_EXPIRY_TIME } from "../utils/constants.js";
 import DeviceDetector from "node-device-detector";
+import forgotPasswordModel from "../models/forgotPassword.model.js";
+import { forgotPasswordEmailTemplate } from "../utils/emailTemplates.js";
 
 export const handleUserSignUp = async (req, res) => {
   const data = req.body;
@@ -60,7 +63,9 @@ export const handleUserSignUp = async (req, res) => {
     "send-vefification-email",
     {
       email,
+      username: newUser["username"],
       token,
+      type: 0,
     },
     {
       removeOnComplete: true,
@@ -117,7 +122,7 @@ export const handleUserLogin = async (req, res) => {
     deviceInfo: false,
     maxUserAgentSize: 500,
   });
-  const device = detector?.os?.name || 'Unknown';
+  const device = detector?.os?.name || "Unknown";
   try {
     sessionDetails = await sessionModel.create({
       userId: userDetails._id,
@@ -185,9 +190,9 @@ export const handleUserForgotPassword = async (req, res) => {
   if (!email) {
     return res.status(400).json({ error: "Email is required" });
   }
-
+  let user;
   try {
-    const user = await authModel.findOne({ email });
+    user = await userModel.findOne({ email });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -198,22 +203,50 @@ export const handleUserForgotPassword = async (req, res) => {
   const forgotToken = generateToken();
 
   try {
-    await authModel.updateOne(
-      { email },
-      {
-        $set: {
-          forgotPasswordToken: forgotToken,
-          forgotPasswordExpiry:
-            parseInt(Date.now()) + parseInt(FORGOT_PASSWORD_EXPIRY),
-        },
-      }
-    );
+    const result = await forgotPasswordModel.findOne({email});
+    if(result){
+      return res.status(200).json({
+        status: 'error',
+        message: 'An email is already sent. Wait 15minutes for new one'
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error?.message
+    })
+  }
+
+
+  try {
+    await forgotPasswordModel.create({
+      email,
+      userId: user._id,
+      forgotPasswordToken: forgotToken,
+      forgotPasswordExpiry:
+        parseInt(Date.now()) + parseInt(FORGOT_PASSWORD_EXPIRY),
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 
-  await sendForgortPasswordEmail(email, forgotToken);
+
+  await emailQueue.add(
+    "send-reset-email",
+    {
+      email,
+      username: user["username"],
+      token : forgotToken,
+      type: 1,
+    },
+    {
+      removeOnComplete: true,
+      removeOnFail: {
+        count: 5,
+      },
+    }
+  );
 
   return res.status(200).json({
     message: "Forgot password email sent successfully",
@@ -304,6 +337,7 @@ export const sendVerificationEmail = async (req, res) => {
       }
     );
     // if modified is zero which means the verificationExpiry is stil exists
+    console.log(result)
     if (result.modifiedCount === 0) {
       return res.status(400).json({
         status: "error",
@@ -312,18 +346,20 @@ export const sendVerificationEmail = async (req, res) => {
     }
     // add to email process queue
     await emailQueue.add(
-      "sending confirmation email",
-      {
-        email,
-        token,
+    "send-vefification-email",
+    {
+      email,
+      username: email,
+      token,
+      type: 0,
+    },
+    {
+      removeOnComplete: true,
+      removeOnFail: {
+        count: 5,
       },
-      {
-        removeOnComplete: true,
-        removeOnFail: {
-          count: 5,
-        },
-      }
-    );
+    }
+  );
   } catch (error) {
     console.log(error);
     return res.status(500).json({

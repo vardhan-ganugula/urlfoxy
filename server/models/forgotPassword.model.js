@@ -6,6 +6,12 @@ const forgotPasswordSchema = new Schema({
         ref: "User",
         required: true,
     },
+    email: {
+        type: String,
+        ref : "User",
+        required: true,
+        unique: true
+    },
     forgotPasswordToken : {
         type: String,
         required: true,
@@ -17,5 +23,7 @@ const forgotPasswordSchema = new Schema({
     },
 }, { timestamps: true });
 const forgotPasswordModel = model("ForgotPassword", forgotPasswordSchema);
-
+forgotPasswordSchema.index({'forgotPasswordExpiry': 1}, {
+    expireAfterSeconds: 0
+})
 export default forgotPasswordModel;
