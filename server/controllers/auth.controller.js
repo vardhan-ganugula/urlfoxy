@@ -258,19 +258,19 @@ export const handleChangePassword = async (req, res) => {
   const { email, password, token } = req.body;
   if (!email || !password || !token) {
     return res
-      .status(400)
+      .status(404)
       .json({ error: "Email, password and token are required" });
   }
-
+  // check for forgot password session
   try {
-    const user = await authModel.findOne({
+    const forgotSession = await forgotPasswordModel.findOne({
       email,
       forgotPasswordToken: token,
       forgotPasswordExpiry: {
         $gt: Date.now(),
       },
     });
-    if (!user) {
+    if (!forgotSession) {
       return res
         .status(400)
         .json({ error: "Invalid token or token expired", status: false });
@@ -278,20 +278,29 @@ export const handleChangePassword = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
+  // create hashedPassword
   const hashedPassword = await hashPassword(password);
+  // update password
   try {
-    await authModel.updateOne(
+    await userModel.updateOne(
       { email },
       {
         $set: {
           password: hashedPassword,
-          forgotPasswordToken: null,
-          forgotPasswordExpiry: null,
         },
       }
     );
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
+  }
+
+  // delete forgot session
+
+
+  try {
+    await forgotPasswordModel.deleteOne({email});
+  } catch (error) {
+    console.log(error)
   }
 
   return res
