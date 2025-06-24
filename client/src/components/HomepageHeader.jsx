@@ -29,9 +29,8 @@ const HomepageHeader = () => {
                 </li>
               ))}
             </ul>
-            <Button variant="default" bolded="true">
-              {" "}
-              Login{" "}
+            <Button variant="glowy" bolded="true">
+              Login
             </Button>
           </div>
         </div>

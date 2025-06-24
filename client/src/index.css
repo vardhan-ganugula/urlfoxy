@@ -1,11 +1,31 @@
-@import 'tailwindcss';
-
+@import "tailwindcss";
 
 @theme {
-    --color-primary : #A1E231;
+  --color-primary: #a1e231;
 }
 
+* {
+  font-family: "Bricolage Grotesque", sans-serif;
+}
 
-*{
-    font-family: "Bricolage Grotesque", sans-serif;
+@property --glowy{
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.glowy{
+  --glowy-angle : 0deg;
+  background: conic-gradient(from var(--glowy), #ff0, #0ff, #f0f, #0ff, #ff0);
+  animation: glow-rotate 5s linear infinite;
+}
+
+@keyframes glow-rotate{
+  0%{
+    --glowy: 0deg;
+  }
+  100%{
+    --glowy: 360deg;
+
+  }
 }
