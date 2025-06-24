@@ -1,3 +1,4 @@
+import HeroPage from '../components/HeroPage'
 import HomepageHeader from '../components/homepageHeader'
 
 const Homepage = () => {
@@ -6,7 +7,7 @@ const Homepage = () => {
        
 
         <HomepageHeader />
-        <main className='bg-black min-h-screen'/>
+        <HeroPage />
 
     </>
   )

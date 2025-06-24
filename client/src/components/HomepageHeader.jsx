@@ -8,7 +8,7 @@ const HomepageHeader = () => {
       <nav className="w-full p-3 flex justify-center items-center">
         <div
           className="w-[80%] border-1 px-10 flex justify-between items-center border-zinc-800 p-3
-            rounded-full
+            rounded-full bg-zinc-900
           "
         >
           <div className="text-2xl font-bold">Logo</div>
@@ -21,7 +21,7 @@ const HomepageHeader = () => {
                     className={({ isActive }) =>
                       isActive
                         ? "text-primary underline underline-offset-4 decoration-wavy"
-                        : ""
+                        : "text-neutral-400 "
                     }
                   >
                     {link.name}

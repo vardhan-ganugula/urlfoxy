@@ -2,6 +2,7 @@
 
 @theme {
   --color-primary: #a1e231;
+  --font-lato : "Lato", sans-serif;
 }
 
 * {
@@ -19,7 +20,10 @@
   background: conic-gradient(from var(--glowy), #ff0, #0ff, #f0f, #0ff, #ff0);
   animation: glow-rotate 5s linear infinite;
 }
-
+h1{
+  font-family: "Lato";
+  font-weight: 900;
+}
 @keyframes glow-rotate{
   0%{
     --glowy: 0deg;
