@@ -2,34 +2,38 @@
 
 @theme {
   --color-primary: #a1e231;
-  --font-lato : "Lato", sans-serif;
+  --font-lato: "Lato", sans-serif;
 }
 
 * {
   font-family: "Bricolage Grotesque", sans-serif;
 }
 
-@property --glowy{
+@property --glowy {
   syntax: "<angle>";
   initial-value: 0deg;
   inherits: false;
 }
 
-.glowy{
-  --glowy-angle : 0deg;
+.glowy {
+  --glowy-angle: 0deg;
   background: conic-gradient(from var(--glowy), #ff0, #0ff, #f0f, #0ff, #ff0);
   animation: glow-rotate 5s linear infinite;
 }
-h1{
-  font-family: "Lato";
-  font-weight: 900;
+
+.glowy-shadow:hover {
+  box-shadow: 0 0 60px  0 oklch(79.579% 0.16385 82.171 / 0.282),
+              0 0 120px 0 oklch(79.579% 0.16385 82.171 / 0.282),
+              0 0 180px 0 oklch(79.579% 0.16385 82.171 / 0.282);
 }
-@keyframes glow-rotate{
-  0%{
+.main-title {
+  font-family: "Lato", sans-serif;
+}
+@keyframes glow-rotate {
+  0% {
     --glowy: 0deg;
   }
-  100%{
+  100% {
     --glowy: 360deg;
-
   }
 }

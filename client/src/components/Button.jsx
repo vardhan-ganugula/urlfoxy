@@ -9,7 +9,7 @@ const Button = ({
   return (
     <button
       className={`
-         cursor-pointer p-[2px] ${
+         cursor-pointer p-[2px] hover:bg-primary/80 md:text-md text-xs ${
           variant === "default"
             ? "bg-[#A1E231] text-black rounded-full"
             : variant === "outline"
