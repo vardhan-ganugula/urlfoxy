@@ -1,5 +1,5 @@
 import HeroPage from '../components/HeroPage'
-import HomepageHeader from '../components/homepageHeader'
+import HomepageHeader from '../components/HomepageHeader'
 
 const Homepage = () => {
   return (
