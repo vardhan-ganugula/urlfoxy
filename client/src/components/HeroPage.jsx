@@ -2,11 +2,11 @@ import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Button from "./Button";
-import { IoExtensionPuzzle,IoQrCode  } from "react-icons/io5";
+import { IoExtensionPuzzle, IoQrCode } from "react-icons/io5";
 import { IoMdLink } from "react-icons/io";
 import { TfiStatsUp } from "react-icons/tfi";
-import analyticsImage from '../assets/imgs/analytics.jpg'
-import StatsBlock from "./StatsBlock";
+import analyticsImage from "../assets/imgs/analytics.jpg";
+import FeatureBlocks from "./FeatureBlocks";
 
 const HeroPage = () => {
   gsap.registerPlugin(useGSAP);
@@ -101,15 +101,19 @@ const HeroPage = () => {
               <span className="p-1 rounded-full bg-white text-amber-500">
                 <IoMdLink size={12} />
               </span>
-              <span className="md:inline-block hidden text-xs">short links</span>
+              <span className="md:inline-block hidden text-xs">
+                short links
+              </span>
               <span className="inline-block md:hidden text-xs">create</span>
             </div>
 
             <div className="flex p-1 gap-1 pr-3 items-center bg-transparent border border-amber-500 rounded-full capitalize">
               <span className="p-1 rounded-full bg-white text-amber-500">
-                <IoQrCode  size={12} />
+                <IoQrCode size={12} />
               </span>
-              <span className="md:inline-block hidden text-xs">short links</span>
+              <span className="md:inline-block hidden text-xs">
+                short links
+              </span>
               <span className="inline-block md:hidden text-xs">share</span>
             </div>
 
@@ -117,29 +121,37 @@ const HeroPage = () => {
               <span className="p-1 rounded-full bg-white text-amber-500">
                 <TfiStatsUp size={12} />
               </span>
-              <span className="md:inline-block hidden text-xs">manage your links</span>
+              <span className="md:inline-block hidden text-xs">
+                manage your links
+              </span>
               <span className="inline-block md:hidden text-xs">analyze</span>
             </div>
-
           </div>
-
 
           <div className="mt-18 grid grid-cols-2 w-full">
-            <div className="my-auto text-center text-2xl">
-              <span className="text-primary">Campaign</span> <span className="text-amber-500">Monitoring</span> <br /> & <span className="text-violet-500">Analytics</span>
+            <div className="w-[80%] mx-auto">
+              <div className="my-auto">
+                <div className="text-3xl space-x-2">
+                  <span className="text-primary">Campaign</span>
+                  <span className="text-amber-500">Monitoring</span> &
+                  <span className="text-violet-500"> Analytics</span>
+                </div>
+                <p className="text-sm text-zinc-400 my-5">Learn from your links and build better digital campaigns</p>
+                <Button>Start for free</Button>
+              </div>
             </div>
             <div className="w-[300px] h-[250px] items-center">
-              <img src={analyticsImage} className="w-full h-full object-cover rounded" alt="" />
+              <img
+                src={analyticsImage}
+                className="w-full h-full object-cover rounded"
+                alt=""
+              />
             </div>
           </div>
-
-
         </div>
       </section>
 
-      <section className="flex justify-center gap-3 h-[500px]">
-        <StatsBlock />
-      </section>
+      <FeatureBlocks />
     </main>
   );
 };

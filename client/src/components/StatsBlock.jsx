@@ -1,13 +1,18 @@
 import React from "react";
-import { TfiStatsUp } from "react-icons/tfi";
 
-const StatsBlock = () => {
+const StatsBlock = ({
+  icon, title, tagline
+}) => {
   return (
     <div className="w-[300px] h-[300px] rounded-lg flex gap-5 p-5 flex-col justify-center items-center border border-zinc-800 bg-zinc-900">
+      <h5 className="text-white text-2xl">{title}</h5>
       <div className="relative bg-black w-[100px] h-[100px]">
         <div className="absolute w-full h-full grid grid-cols-4 gap-0.5 p-0.1">
           {Array.from({ length: 16 }).map((_, idx) => (
-            <div className="text-center my-auto bg-zinc-950 w-[22px] h-[22px]"></div>
+            <div
+              key={idx}
+              className="text-center my-auto bg-zinc-950 w-[22px] h-[22px]"
+            ></div>
           ))}
         </div>
 
@@ -17,10 +22,16 @@ const StatsBlock = () => {
 
         <div className="w-full h-full flex items-center justify-center absolute">
           <div className="bg-black rounded p-3 text-white">
-            <TfiStatsUp /> 
+            {
+              React.createElement(icon, {
+                size: 19,
+                color: '#fff'
+              })
+            }
           </div>
         </div>
       </div>
+      <p className="text-zinc-500">{tagline}</p>
     </div>
   );
 };
