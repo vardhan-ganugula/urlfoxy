@@ -5,7 +5,7 @@ import Button from "./Button";
 import { IoExtensionPuzzle, IoQrCode } from "react-icons/io5";
 import { IoMdLink } from "react-icons/io";
 import { TfiStatsUp } from "react-icons/tfi";
-import analyticsImage from "../assets/imgs/analytics.jpg";
+import analyticsImage from "../assets/imgs/stats.webp";
 import FeatureBlocks from "./FeatureBlocks";
 
 const HeroPage = () => {
@@ -128,19 +128,19 @@ const HeroPage = () => {
             </div>
           </div>
 
-          <div className="mt-18 grid grid-cols-2 w-full">
-            <div className="w-[80%] mx-auto">
+          <div className="mt-18 w-[80%] flex justify-between">
+            <div className="mx-auto">
               <div className="my-auto">
                 <div className="text-3xl space-x-2">
                   <span className="text-primary">Campaign</span>
                   <span className="text-amber-500">Monitoring</span> &
                   <span className="text-violet-500"> Analytics</span>
                 </div>
-                <p className="text-sm text-zinc-400 my-5">Learn from your links and build better digital campaigns</p>
+                <p className="text-sm text-zinc-400 mt-5 mb-9">Learn from your links and build better digital campaigns</p>
                 <Button>Start for free</Button>
               </div>
             </div>
-            <div className="w-[300px] h-[250px] items-center">
+            <div className="items-center w-[300px] ">
               <img
                 src={analyticsImage}
                 className="w-full h-full object-cover rounded"

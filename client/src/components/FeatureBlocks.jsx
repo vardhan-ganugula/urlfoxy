@@ -26,7 +26,7 @@ const FeatureBlocks = () => {
   return (
     <section className="flex justify-center gap-3 h-[500px] flex-col items-center">
         <h2 className="my-5 text-5xl text-amber-500 font-bold">
-            Features
+            What we offers
         </h2>
       <div className="flex md:flex-row flex-col gap-5">
         {featureBlock.map((block, idx) => (
