@@ -4,14 +4,14 @@ const StatsBlock = ({
   icon, title, tagline
 }) => {
   return (
-    <div className="w-[300px] h-[300px] rounded-lg flex gap-5 p-5 flex-col justify-center items-center border border-zinc-800 bg-zinc-900">
-      <h5 className="text-white text-2xl">{title}</h5>
+    <div className="w-[270px] h-[270px] rounded-lg flex gap-5 p-5 flex-col justify-center items-center border border-zinc-800 bg-zinc-900">
+      <h5 className="text-white text-xl">{title}</h5>
       <div className="relative bg-black w-[100px] h-[100px]">
         <div className="absolute w-full h-full grid grid-cols-4 gap-0.5 p-0.1">
           {Array.from({ length: 16 }).map((_, idx) => (
             <div
               key={idx}
-              className="text-center my-auto bg-zinc-950 w-[22px] h-[22px]"
+              className="text-center my-auto bg-zinc-950 w-[20px] h-[20px]"
             ></div>
           ))}
         </div>

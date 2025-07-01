@@ -2,12 +2,13 @@ import React from "react";
 
 const Button = ({
   variant = "default",
-  color = "white",
   children,
   bolded = "false",
+  onClick
 }) => {
   return (
     <button
+      onClick={onClick}
       className={`
          cursor-pointer p-[2px] hover:bg-primary/80 md:text-md text-xs ${
           variant === "default"
@@ -18,7 +19,6 @@ const Button = ({
             ? "rounded-full glowy "
             : ""
         }
-
         ${bolded && "font-bold"}
     `}
     >
