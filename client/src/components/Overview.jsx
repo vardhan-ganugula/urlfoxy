@@ -49,7 +49,7 @@ const Overview = () => {
         <div className="mt-18 w-[80%] flex justify-between">
           <div className="mx-auto">
             <div className="my-auto">
-              <div className="text-3xl space-x-2">
+              <div className="text-lg md:text-3xl space-x-2">
                 <span className="text-primary">Campaign</span>
                 <span className="text-amber-500">Monitoring</span> &
                 <span className="text-violet-500"> Analytics</span>
