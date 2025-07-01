@@ -1,114 +1,189 @@
 import React from "react";
-import { FaHandHoldingHeart,FaCopyright } from "react-icons/fa";
+import { FaHandHoldingHeart, FaCopyright } from "react-icons/fa";
 import Button from "./Button";
 import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/imgs/logo-sm.webp";
 import { FooterSocialLinks } from "../constants/social";
+
 const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <footer className="relative min-h-[400px] w-full mt-[300px] bg-zinc-900">
-      <div className="text-white w-[80%] absolute -top-1/3 rounded-lg p-5 left-1/2 text-center -translate-x-1/2 bg-blue-700 min-h-[300px] flex flex-col items-center">
-        <h2 className="flex tracking-wide text-center text-xl md:text-3xl mt-10">
-          Get closer{" "}
-          <span className="md:px-2 md:pt-2 px-1 text-primary">
-            {" "}
+    <footer className="relative min-h-[400px] w-full mt-32 md:mt-[300px] bg-zinc-900">
+      {/* CTA Section */}
+      <div className="text-white w-[90%] md:w-[80%] absolute -top-24 md:-top-32 rounded-lg p-4 md:p-8 left-1/2 text-center -translate-x-1/2 bg-blue-700 min-h-[200px] md:min-h-[300px] flex flex-col items-center justify-center">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-1 md:gap-2 flex-wrap">
+          <h2 className="text-lg md:text-3xl font-bold tracking-wide">
+            Get closer
+          </h2>
+          <span className="text-white text-lg md:text-3xl px-1 md:px-2">
             <FaHandHoldingHeart />
-          </span>{" "}
-          to your audience
-        </h2>
-        <h2 className="flex tracking-wide text-center text-lg md:text-3xl mt-1">
+          </span>
+          <h2 className="text-lg md:text-3xl font-bold tracking-wide">
+            to your audience
+          </h2>
+        </div>
+        <h2 className="text-lg md:text-3xl font-bold tracking-wide mt-1">
           and customers today
         </h2>
-        <p className="mt-6 text-zinc-400 md:text-md text-xs md:w-[25%] w-[70%]">
-          Connect to your audience with branded links. QR Codes, and a
+        <p className="mt-4 md:mt-6 text-zinc-300 text-xs md:text-base w-[90%] md:w-[60%] lg:w-[40%] leading-relaxed">
+          Connect to your audience with branded links, QR Codes, and a
           Link-in-bio that will get their attention
         </p>
         <Button
-          onClick={() => {
-            navigate("/login");
-          }}
-          className="mt-5"
+          onClick={() => navigate("/login")}
+          className="mt-4 md:mt-6 text-sm md:text-base"
         >
           Start for free
         </Button>
       </div>
-      <div className="mt-[200px] text-white flex justify-center">
-        <div className="w-[95%] md:w-[70%] grid md:grid-cols-4 grid-cols-1 place-items-center md:place-content-start items-start">
-          <div>
-            <div className="flex justify-start">
-              <img src={Logo} alt="logo" className="w-14 h-14" />
-              <h3 className="text-bold my-auto main-title">Uclip</h3>
+
+      {/* Main Footer Content */}
+      <div className="pt-32 pt-[200px] pb-8 text-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
+            
+            {/* Logo and Contact Section */}
+            <div className="col-span-1 sm:col-span-2 lg:col-span-1">
+              <div className="flex items-center mb-4">
+                <img src={Logo} alt="logo" className="w-12 h-12 md:w-14 md:h-14" />
+                <h3 className="font-bold text-lg md:text-xl ml-2 main-title">Uclip</h3>
+              </div>
+              <p className="text-zinc-400 text-sm mb-2">Have any questions?</p>
+              <p className="underline underline-offset-4 text-sm break-all">
+                gvardhan2727@gmail.com
+              </p>
             </div>
-            <p className="text-zinc-400 ml-3 text-sm">Have any questions?</p>
-            <p className="underline underline-offset-8 text-sm ml-3 mt-2"> gvardhan2727@gmail.com</p>
-          </div>
-          <div>
-            <h4 className="text-lg">Products</h4>
-            <ul className="text-zinc-500 py-3 md:text-sm text-xs ">
-              <li className="mt-1">
-                <Link to="/create-group">Link Management</Link>
-              </li>
-              <li className="mt-1">
-                <Link to="/custom-domain">Custom Domain</Link>
-              </li>
-              <li className="mt-1">
-                <Link to="/create-url">Shorten Links</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg">Resources</h4>
-            <ul className="text-zinc-500 py-3 md:text-sm text-xs ">
-              <li className="mt-1">
-                <Link to="/support">Support</Link>
-              </li>
-              <li className="mt-1">
-                <Link to="/login">Login</Link>
-              </li>
-              <li className="mt-1">
-                <Link to="/register">Register</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg">Legal</h4>
-            <ul className="text-zinc-500 py-3 md:text-sm text-xs ">
-              <li className="mt-1">
-                <Link to="/create-group">Privacy Policy</Link>
-              </li>
-              <li className="mt-1">
-                <Link to="/custom-domain">Cookie Policy</Link>
-              </li>
-              <li className="mt-1">
-                <Link to="/create-url">Sitemap</Link>
-              </li>
-            </ul>
+
+            {/* Products Section */}
+            <div className="col-span-1">
+              <h4 className="text-lg font-semibold mb-3">Products</h4>
+              <ul className="text-zinc-400 space-y-2 text-sm">
+                <li>
+                  <Link 
+                    to="/create-group" 
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Link Management
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/custom-domain"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Custom Domain
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/create-url"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Shorten Links
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Resources Section */}
+            <div className="col-span-1">
+              <h4 className="text-lg font-semibold mb-3">Resources</h4>
+              <ul className="text-zinc-400 space-y-2 text-sm">
+                <li>
+                  <Link 
+                    to="/support"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Support
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/login"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/register"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Register
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Legal Section */}
+            <div className="col-span-1">
+              <h4 className="text-lg font-semibold mb-3">Legal</h4>
+              <ul className="text-zinc-400 space-y-2 text-sm">
+                <li>
+                  <Link 
+                    to="/privacy-policy"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/cookie-policy"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Cookie Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/sitemap"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    Sitemap
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      <div className="w-[90%] mx-auto mt-5 flex flex-col justify-center items-center">
-        <hr className="w-[90%] h-[1px] bg-zinc-600 mx-auto border-none my-2" />
-        <div className="flex justify-between text-white w-[90%]">
-            <div className="text-sm">
-                <div><p>Made with 💖 in India</p></div>
-                <div><p className="text-zinc-300 flex gap-2 mt-1 mb-2"> © {new Date().getFullYear()} uclip.</p></div>
+
+      {/* Bottom Section */}
+      <div className="w-full px-4 md:px-8 pb-6">
+        <div className="max-w-7xl mx-auto">
+          <hr className="w-full h-[1px] bg-zinc-600 border-none mb-4" />
+          
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-white">
+            {/* Left Side - Copyright */}
+            <div className="text-sm text-center md:text-left">
+              <p className="mb-1">Made with 💖 in India</p>
+              <p className="text-zinc-300 flex items-center justify-center md:justify-start gap-1">
+                <FaCopyright className="w-3 h-3" />
+                {new Date().getFullYear()} uclip.
+              </p>
             </div>
-            <div className="text-sm my-auto flex gap-7">
-    
-                <span>Keep in touch</span> <span className="flex gap-2">
-                    {
-                        FooterSocialLinks.map((social, idx) => (<Link key={idx} to={social.link}>
-                            {
-                                React.createElement(social.icon, {
-                                    size: 18
-                                })
-                            }
-                        </Link>))
-                    }
-                </span>
+
+            {/* Right Side - Social Links */}
+            <div className="text-sm flex flex-col sm:flex-row items-center gap-2 md:gap-4">
+              <span className="whitespace-nowrap">Keep in touch</span>
+              <div className="flex gap-3">
+                {FooterSocialLinks.map((social, idx) => (
+                  <Link 
+                    key={idx} 
+                    to={social.link}
+                    className="text-zinc-400 hover:text-white transition-colors duration-200"
+                  >
+                    {React.createElement(social.icon, {
+                      size: 18
+                    })}
+                  </Link>
+                ))}
+              </div>
             </div>
+          </div>
         </div>
       </div>
     </footer>
