@@ -9,7 +9,7 @@ const InfoBlock = () => {
       <div className="relative h-auto lg:min-w-[1000px] lg:w-[50%] bg-zinc-900 rounded w-[95%] flex items-center justify-center">
         <div className="w-full flex items-center md:flex-row flex-col md:h-[400px] p-5 md:px-10 gap-5">
           <div className="w-1/2 h-full">
-            <img src={Stats} className="w-full h-full object-cover" alt="" />
+            <img src={Stats} className="w-full h-full object-contain" alt="" />
           </div>
           <div className="h-full p-5 flex justify-center items-start text-white flex-col">
             <h4 className="text-4xl">

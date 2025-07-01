@@ -5,6 +5,7 @@ import Button from "./Button";
 import FeatureBlocks from "./FeatureBlocks";
 import InfoBlock from "./InfoBlock";
 import Overview from "./Overview";
+import Accordion from "./Accordion";
 
 const HeroPage = () => {
   gsap.registerPlugin(useGSAP);
@@ -86,6 +87,14 @@ const HeroPage = () => {
       <Overview />
       <FeatureBlocks />
       <InfoBlock />
+      <section className="flex flex-col gap-5 p-5 items-center">
+        <div className="md:w-[1000px] w-full">
+          <h2 className="text-center text-white text-4xl mb-10 font-bold">
+            Your questions, <span className="text-blue-500">answered</span>
+          </h2>
+          <Accordion></Accordion>
+        </div>
+      </section>
     </main>
   );
 };

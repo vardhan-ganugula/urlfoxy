@@ -25,7 +25,7 @@ const FeatureBlocks = () => {
 
   return (
     <section className="flex justify-center gap-3 min-h-[500px] flex-col items-center">
-        <h2 className="my-5 text-5xl text-amber-500 font-bold">
+        <h2 className="my-5 text-4xl text-amber-500 font-bold">
             What we offers
         </h2>
       <div className="flex md:flex-row flex-col gap-5">
