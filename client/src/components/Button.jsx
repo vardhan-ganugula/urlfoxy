@@ -4,7 +4,8 @@ const Button = ({
   variant = "default",
   children,
   bolded = "false",
-  onClick
+  onClick,
+  className
 }) => {
   return (
     <button
@@ -19,7 +20,7 @@ const Button = ({
             ? "rounded-full glowy "
             : ""
         }
-        ${bolded && "font-bold"}
+        ${bolded && "font-bold"} ${className}
     `}
     >
       <span

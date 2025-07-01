@@ -39,7 +39,7 @@ const Accordion = ({ data = [] }) => {
 
   const [openIdx, setOpenIdx] = useState(null);
   return (
-    <div className="grid grid-cols-1 md:gap-5 gap-2 items-start">
+    <div className="grid grid-cols-1 md:gap-5 gap-2 items-start w-full md:px-3">
       {accordionData.map((data, idx) => {
         return (
           <div className="rounded border border-zinc-800 text-white " key={idx}>
@@ -54,7 +54,7 @@ const Accordion = ({ data = [] }) => {
               }}
             >
               <span
-                className={`absolute right-5 top-3 transition-transform duration-300 ${
+                className={`absolute right-5 top-5.5 transition-transform duration-300 ${
                   openIdx === idx ? "rotate-0" : "-rotate-180"
                 } `}
               >
@@ -64,10 +64,12 @@ const Accordion = ({ data = [] }) => {
             </div>
             <div
               className={`bg-zinc-900 overflow-hidden transition-all duration-500 ${
-                idx === openIdx ? "min-h-full p-5 text-white " : "max-h-0 p-0 text-transparent"
+                idx === openIdx ? "min-h-full p-5  " : "max-h-0 p-0"
               }`}
             >
-              {data.content}
+              <p className={`duration-300 delay-300 ${openIdx === idx ? 'text-white' : 'text-transparent'}`}>
+                {data.content}
+              </p>
             </div>
           </div>
         );
