@@ -9,7 +9,7 @@ const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <footer className="relative min-h-[400px] w-full mt-32 md:mt-[300px] bg-zinc-900">
+    <footer className="relative min-h-[400px] w-full bg-zinc-900">
       {/* CTA Section */}
       <div className="text-white w-[90%] md:w-[80%] absolute -top-24 md:-top-32 rounded-lg p-4 md:p-8 left-1/2 text-center -translate-x-1/2 bg-blue-700 min-h-[200px] md:min-h-[300px] flex flex-col items-center justify-center">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-1 md:gap-2 flex-wrap">

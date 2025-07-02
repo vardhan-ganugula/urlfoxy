@@ -60,10 +60,10 @@ const HeroPage = () => {
   }, []);
 
   return (
-    <main className="bg-black min-h-screen w-full flex flex-col gap-5">
+    <main className="bg-black min-h-screen w-full flex flex-col gap-5 pb-32 md:pb-[300px]">
       <div
         ref={pointerRef}
-        className="fixed w-[20px] h-[20px] rounded-full bg-white pointer-events-none z-50 opacity-0 mix-blend-difference"
+        className="fixed hidden md:block w-[20px] h-[20px] rounded-full bg-white pointer-events-none z-50 opacity-0 mix-blend-difference"
       ></div>
       <section className="before:absolute relative before:content-[''] before:w-52 before:h-52 before:rounded-full before:bg-amber-500/25 before:top-18 before:left-1/2 before:-translate-x-1/2 before:z-0 before:blur-[80px]">
         <div className="w-full relative z-10 h-[70vh] flex items-center justify-center flex-col">
@@ -97,7 +97,6 @@ const HeroPage = () => {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 };
