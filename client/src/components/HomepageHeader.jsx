@@ -31,7 +31,7 @@ const HomepageHeader = () => {
             rounded-full bg-zinc-900 
           "
         >
-          <div className="text-2xl font-bold">Logo</div>
+          <div className="text-2xl font-bold">UCLIP</div>
           <div className="flex gap-3 md:gap-10 items-center">
             <ul className="gap-5 mr-10 border-r border-primary pr-5 hidden md:flex">
               {HomePageNavLinks.map((link, idx) => (
