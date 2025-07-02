@@ -4,7 +4,7 @@ import { FaLinkedinIn } from "react-icons/fa6";
 export const FooterSocialLinks = [
     {
         icon: FaTwitter,
-        link: 'https://www.instagram.com/ig_vandron'
+        link: 'https://twitter.com/ganugulavardhan'
     },
     {
         icon: FaLinkedinIn,
