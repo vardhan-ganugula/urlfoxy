@@ -31,4 +31,4 @@ const InfoBlock = () => {
   );
 };
 
-export default InfoBlock;
+export default React.memo(InfoBlock);

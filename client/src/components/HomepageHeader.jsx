@@ -1,13 +1,16 @@
 import Button from "./Button";
 import { HomePageNavLinks } from "../constants/navlinks";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { CiMenuBurger } from "react-icons/ci";
 import { useState } from "react";
+import { memo } from "react";
+
 
 const HomepageHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [initialDragPoint, setInitialDragPoint] = useState(null);
   const [finalDragPoint, setFinalDragPoint] = useState(null);
+  const navigate = useNavigate();
   const handleTouchStart = (e) => {
     setInitialDragPoint(e.targetTouches[0].clientY);
   };
@@ -54,7 +57,9 @@ const HomepageHeader = () => {
                 <CiMenuBurger size={25} />
               </button>
             </div>
-            <Button variant="glowy" bolded="true">
+            <Button variant="glowy" bolded="true"
+              onClick={()=>{navigate('/login')}}
+            >
               Login
             </Button>
           </div>
@@ -87,4 +92,4 @@ const HomepageHeader = () => {
   );
 };
 
-export default HomepageHeader;
+export default memo(HomepageHeader);

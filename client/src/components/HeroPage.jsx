@@ -101,4 +101,4 @@ const HeroPage = () => {
   );
 };
 
-export default HeroPage;
+export default React.memo(HeroPage);

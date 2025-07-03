@@ -36,4 +36,4 @@ const StatsBlock = ({
   );
 };
 
-export default StatsBlock;
+export default React.memo(StatsBlock);

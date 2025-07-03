@@ -78,4 +78,4 @@ const Accordion = ({ data = [] }) => {
   );
 };
 
-export default Accordion;
+export default React.memo(Accordion);

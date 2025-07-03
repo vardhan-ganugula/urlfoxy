@@ -73,4 +73,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default React.memo(Overview);
