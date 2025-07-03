@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React,{ useState } from "react";
 import { FaArrowAltCircleDown } from "react-icons/fa";
 
 const Accordion = ({ data = [] }) => {
@@ -78,4 +78,4 @@ const Accordion = ({ data = [] }) => {
   );
 };
 
-export default Accordion;
+export default React.memo(Accordion);

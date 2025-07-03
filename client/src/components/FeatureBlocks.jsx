@@ -42,4 +42,4 @@ const FeatureBlocks = () => {
   );
 };
 
-export default FeatureBlocks;
+export default React.memo(FeatureBlocks);

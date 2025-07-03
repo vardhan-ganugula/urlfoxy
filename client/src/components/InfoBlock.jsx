@@ -1,4 +1,4 @@
-import splash from "../assets/imgs/splash.png";
+import React from 'react'
 import Stats from "../assets/imgs/stats2.webp";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
@@ -31,4 +31,4 @@ const InfoBlock = () => {
   );
 };
 
-export default InfoBlock;
+export default React.memo(InfoBlock);
