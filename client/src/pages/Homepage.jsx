@@ -4,7 +4,7 @@ import HomepageHeader from "../components/HomepageHeader";
 
 const Homepage = () => {
   return (
-    <main className="relative">
+    <main>
       <HomepageHeader />
       <HeroPage />
       <Footer />

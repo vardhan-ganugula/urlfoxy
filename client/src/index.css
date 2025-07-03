@@ -22,9 +22,9 @@
 }
 
 .glowy-shadow:hover {
-  box-shadow: 0 0 60px  0 oklch(79.579% 0.16385 82.171 / 0.282),
-              0 0 120px 0 oklch(79.579% 0.16385 82.171 / 0.282),
-              0 0 180px 0 oklch(79.579% 0.16385 82.171 / 0.282);
+  box-shadow: 0 0 60px 0 oklch(79.579% 0.16385 82.171 / 0.282),
+    0 0 120px 0 oklch(79.579% 0.16385 82.171 / 0.282),
+    0 0 180px 0 oklch(79.579% 0.16385 82.171 / 0.282);
 }
 .main-title {
   font-family: "Lato", sans-serif;
@@ -36,4 +36,11 @@
   100% {
     --glowy: 360deg;
   }
+}
+
+/* remove the background color when user uses a suggested filed in the form */
+input:-webkit-autofill {
+  background-color: transparent !important;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #fff !important;
 }
