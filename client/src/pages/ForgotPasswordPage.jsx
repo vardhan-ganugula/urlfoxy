@@ -2,18 +2,14 @@ import HomepageHeader from "../components/HomepageHeader";
 import Footer from "../components/Footer";
 import UCat from "../assets/imgs/uclip-cat.webp";
 import { MdOutlineMail } from "react-icons/md";
-import { PiPassword } from "react-icons/pi";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import {useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
-import { loginSchema } from "../schemas/auth.schema";
 import {z} from 'zod';
 
 
 const ForgotPasswordPage = () => {
-  const [isVisiblePassword, setVisiblePassword] = useState(false);
   const forgotPasswordSchema = z.object({
     email: z.string().email({
         message: 'Invalid Email'
@@ -39,7 +35,7 @@ const ForgotPasswordPage = () => {
         <div className="md:w-[90%] lg:w-[70%] mx-auto h-full bg-zinc-950 border border-zinc-900 flex items-center md:flex-row flex-col w-full gap-4 justify-start rounded-lg p-2 overflow-hidden ">
           <div className="hidden md:block md:w-1/2 w-full shrink-0 rounded-lg bg-zinc-900 md:h-full p-10 ">
             <h2 className="text-white text-5xl font-bold">
-              Login to <span className="text-blue-600">UCLIP</span>
+              Forgot <span className="text-blue-600">Password</span>
             </h2>
             <div className="w-2/3 h-2/3 mx-auto mt-18">
               <img
