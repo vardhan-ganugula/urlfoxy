@@ -49,7 +49,7 @@ const ForgotPasswordPage = () => {
             <div className="absolute -right-3 -top-3 bg-blue-400 opacity-45 h-[340px] w-[340px] rounded-full blur-[90px]"></div>
             <div className="rounded-lg absolute top-0 left-0 backdrop-blur-[200px] h-full w-full text-white">
               <div className="w-2/3 mx-auto mt-28">
-                <h4 className="font-bold text-3xl uppercase">Welcome Back</h4>
+                <h4 className="font-bold text-3xl uppercase">Send Reset Email</h4>
                 <div className="">
                   <form className="flex w-full flex-col mt-18 gap-2"
                     onSubmit={handleSubmit(handleLogin)}
