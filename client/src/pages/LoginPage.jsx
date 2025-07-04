@@ -6,22 +6,26 @@ import { PiPassword } from "react-icons/pi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
-import {useForm} from 'react-hook-form'
-import {zodResolver} from '@hookform/resolvers/zod'
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../schemas/auth.schema";
 const LoginPage = () => {
   const [isVisiblePassword, setVisiblePassword] = useState(false);
-  const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm({
-    resolver : zodResolver(loginSchema)
-  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
   const handleLogin = useCallback(async (data) => {
     await new Promise((result, reject) => {
       setTimeout(() => {
-        result('hi')
-      }, 5000)
-    })
-  },[])
-  console.log(isSubmitting)
+        result("hi");
+      }, 5000);
+    });
+  }, []);
+  console.log(isSubmitting);
   return (
     <>
       <HomepageHeader />
@@ -45,7 +49,8 @@ const LoginPage = () => {
               <div className="w-2/3 mx-auto mt-28">
                 <h4 className="font-bold text-3xl uppercase">Welcome Back</h4>
                 <div className="">
-                  <form className="flex w-full flex-col mt-18 gap-2"
+                  <form
+                    className="flex w-full flex-col mt-18 gap-2 items-center justify-center"
                     onSubmit={handleSubmit(handleLogin)}
                   >
                     <div className="w-full inline-flex bg-white/5 px-5 py-3 rounded-md">
@@ -58,15 +63,12 @@ const LoginPage = () => {
                         placeholder="your email address"
                         autoComplete="email"
                         id="email"
-
-                        {
-                          ...register('email')
-                        }
+                        {...register("email")}
                       />
                     </div>
-                    <p className="text-red-500">{
-                        errors.email && errors.email.message
-                      }</p>
+                    <p className="text-red-500">
+                      {errors.email && errors.email.message}
+                    </p>
                     <div className="w-full inline-flex bg-white/5 px-5 py-3 rounded-md gap-2 relative">
                       <label htmlFor="password" className="w-6 py-2">
                         <PiPassword />
@@ -75,10 +77,8 @@ const LoginPage = () => {
                         type={isVisiblePassword ? "text" : "password"}
                         className="inline-block grow outline-none ring-0 text-sm overflow-y-auto placeholder:tracking-wider"
                         placeholder="your secure password"
-                        id="password" 
-                        {
-                          ...register('password')
-                        }
+                        id="password"
+                        {...register("password")}
                       />
                       <span
                         className="w-4 py-2 cursor-pointer"
@@ -88,13 +88,15 @@ const LoginPage = () => {
                       </span>
                     </div>
                     <p className="text-red-500">
-                      {
-                        errors.password && errors.password.message
-                      }
+                      {errors.password && errors.password.message}
                     </p>
                     <button
                       disabled={isSubmitting}
-                      className={`rounded px-2 w-24 py-2   mt-5 hover:bg-blue-700 text-white  ${isSubmitting ? 'cursor-not-allowed bg-blue-400' : ' bg-blue-600 cursor-pointer'} `}
+                      className={`rounded px-2 w-50 py-2   mt-5 hover:bg-blue-700 text-white  ${
+                        isSubmitting
+                          ? "cursor-not-allowed bg-blue-400"
+                          : " bg-blue-600 cursor-pointer"
+                      } `}
                       type="submit"
                     >
                       Login
