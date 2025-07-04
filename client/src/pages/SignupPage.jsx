@@ -31,7 +31,7 @@ const SignupPage = () => {
   return (
     <>
       <HomepageHeader />
-      <main className=" md:pb-[300px] h-[80vh] md:h-[110vh] bg-black w-full md:pt-24 ">
+      <main className=" md:pb-[300px] min-h-[1100px] h-[80vh] md:h-[110vh] bg-black w-full md:pt-24 ">
         <div className="md:w-[90%] lg:w-[70%] mx-auto h-full bg-zinc-950 border border-zinc-900 flex items-center md:flex-row flex-col w-full gap-4 justify-start rounded-lg p-2 overflow-hidden ">
           <div className="hidden md:block md:w-1/2 w-full shrink-0 rounded-lg bg-zinc-900 md:h-full p-10 ">
             <h2 className="text-white text-5xl font-bold">
