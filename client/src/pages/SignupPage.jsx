@@ -10,6 +10,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schemas/auth.schema";
 import { useCallback } from "react";
+import {useSelector, useDispatch} from 'react-redux'
+import {authFailure, authRequest, authSuccess} from '../store/slices/auth.slice.js';
+import {toast} from "react-hot-toast";
+import axios from "../libs/axios.lib.js";
+
 
 const SignupPage = () => {
   const [isVisiblePassword, setVisiblePassword] = useState(false);
@@ -20,13 +25,23 @@ const SignupPage = () => {
   } = useForm({
     resolver: zodResolver(registerSchema),
   });
+  const dispatch = useDispatch();
   const handleSignup = useCallback(async (data) => {
-    await new Promise((res, rej) => {
-      setTimeout(() => {
-        res("success");
-      }, 2000);
-    });
-    console.log(data)
+    dispatch(authRequest)
+    const toastId = toast.loading('Creating user...')
+    try {
+      const userData = await axios.post('/auth/register', data);
+      toast.success(userData.data.message);
+      dispatch(authSuccess(userData.data.data))
+    } catch (error) {
+      const errorMessage = error?.response?.data?.error || error?.message || 'Something Went Wrong'
+      toast.error(errorMessage)
+      dispatch(authFailure(errorMessage))
+    }
+    finally{
+      toast.remove(toastId);
+    }
+    
   }, []);
   return (
     <>

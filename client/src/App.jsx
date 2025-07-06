@@ -7,11 +7,12 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPassword'
 import {Provider} from 'react-redux';
 import reduxStore from './store/index'
-
+import {Toaster} from 'react-hot-toast'
 const App = () => {
   return (
     <>
       <Provider store={reduxStore}>
+        <Toaster />
         <Routes>
           <Route path='/' element={<Homepage />} />
           <Route path='/login' element={<LoginPage />} />
