@@ -9,19 +9,37 @@ import { Link } from "react-router-dom";
 import {useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { loginSchema } from "../schemas/auth.schema";
+import {toast} from 'react-hot-toast';
+import axios from '../libs/axios.lib.js'
+import {useDispatch} from 'react-redux'
+import {authFailure, authSuccess, authRequest} from '../store/slices/auth.slice.js';
+import { useNavigate } from "react-router-dom";
+
 const LoginPage = () => {
   const [isVisiblePassword, setVisiblePassword] = useState(false);
   const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm({
     resolver : zodResolver(loginSchema)
-  })
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLogin = useCallback(async (data) => {
-    await new Promise((result, reject) => {
-      setTimeout(() => {
-        result('hi')
-      }, 5000)
-    })
+    const toastId = toast.loading('Authenticating...');
+    dispatch(authRequest());
+    try {
+      const result = await axios.post('/auth/login', data);
+      const userData = result.data;
+      toast.success('Login Success')
+      dispatch(authSuccess(userData.data));
+      navigate('/dashboard')
+    } catch (error) {
+      const errorMessage = error?.response?.data?.error || error?.message || 'Something Went Wrong'
+      toast.error(errorMessage)
+      dispatch(authFailure(errorMessage))
+    }
+    finally{
+      toast.dismiss(toastId)
+    }
   },[])
-  console.log(isSubmitting)
   return (
     <>
       <HomepageHeader />

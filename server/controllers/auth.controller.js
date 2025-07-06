@@ -72,16 +72,11 @@ export const handleUserSignUp = async (req, res) => {
       },
     }
   );
-
+  const { password: noNeed, emailVerificationToken, emailVerificationExpiry,  ...safeUser  } = newUser.toObject();
   return res.status(201).json({
     message: "User registered successfully check you email",
     status: true,
-    data: {
-      id: newUser._id,
-      username: newUser.username,
-      email: newUser.email,
-      role: newUser.role,
-    },
+    data: safeUser
   });
 };
 
