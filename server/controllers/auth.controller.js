@@ -303,9 +303,9 @@ export const handleChangePassword = async (req, res) => {
 export const sendVerificationEmail = async (req, res) => {
   const email = req.body?.email;
   if (!email) {
-    return res.status(400).json({
+    return res.status(404).json({
       status: "error",
-      message: "email is required",
+      message: "email not found",
     });
   }
   const token = generateToken();
