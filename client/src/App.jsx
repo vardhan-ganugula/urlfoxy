@@ -12,7 +12,7 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(checkAuth());
-  }, [])
+  }, [dispatch])
   return (
     <>
       <Routes>
@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify/:verifyToken" element={<VerifyPage />} />
         <Route
-          path="/:resetToken/reset-password"
+          path="/reset-password/:resetToken"
           element={<ResetPasswordPage />}
         />
       </Routes>

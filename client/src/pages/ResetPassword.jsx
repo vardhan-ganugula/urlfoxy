@@ -9,6 +9,9 @@ import { Link, useParams } from "react-router-dom";
 import {useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { loginSchema as ResetPasswordSchema } from "../schemas/auth.schema";
+import {toast} from 'react-hot-toast';
+import axios from '../libs/axios.lib.js';
+
 
 const ResetPasswordPage = () => {
   const [isVisiblePassword, setVisiblePassword] = useState(false);
@@ -17,13 +20,19 @@ const ResetPasswordPage = () => {
   })
   const {resetToken} = useParams();
   const handleLogin = useCallback(async (data) => {
-    await new Promise((result, reject) => {
-      setTimeout(() => {
-        result('hi')
-      }, 5000)
-    })
-    console.log(resetToken, data)
-  },[])
+    const toastId = toast.loading('Processing Request');
+    try {
+      const response = await axios.post('/auth/reset-password', {
+        ...data, token: resetToken
+      })
+      toast.success(response.data.message);
+    } catch (error) {
+        const errorMessage = error?.response?.data?.message || error?.request?.statusText ||error?.message || 'Something Went Wrong';
+        toast.error(errorMessage);
+    }finally{
+      toast.dismiss(toastId);
+    }
+  },[resetToken])
 
   return (
     <>
