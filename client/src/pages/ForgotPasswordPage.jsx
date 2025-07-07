@@ -2,11 +2,13 @@ import HomepageHeader from "../components/HomepageHeader";
 import Footer from "../components/Footer";
 import UCat from "../assets/imgs/uclip-cat.webp";
 import { MdOutlineMail } from "react-icons/md";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import {useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {z} from 'zod';
+import axios from '../libs/axios.lib.js'
+import {toast} from 'react-hot-toast';
 
 
 const ForgotPasswordPage = () => {
@@ -20,14 +22,18 @@ const ForgotPasswordPage = () => {
     resolver : zodResolver(forgotPasswordSchema)
   })
   const handleLogin = useCallback(async (data) => {
-    await new Promise((result, reject) => {
-      setTimeout(() => {
-        result('hi')
-      }, 5000)
-    })
-    console.log(data)
+    const toastId = toast.loading('Request Processing')
+    try {
+      const response = await axios.post('/auth/forgot-password', data);
+      toast.success(response.data.message)
+    } catch (error) {
+        const errorMessage = error?.response?.data?.message || error?.request?.statusText ||error?.message || 'Something Went Wrong';
+        toast.error(errorMessage)
+      } 
+    finally{
+      toast.dismiss(toastId)
+    }
   },[])
-  console.log(isSubmitting)
   return (
     <>
       <HomepageHeader />
