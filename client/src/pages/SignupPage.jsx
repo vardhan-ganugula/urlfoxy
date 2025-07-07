@@ -27,7 +27,7 @@ const SignupPage = () => {
   });
   const dispatch = useDispatch();
   const handleSignup = useCallback(async (data) => {
-    dispatch(authRequest)
+    dispatch(authRequest())
     const toastId = toast.loading('Creating user...')
     try {
       const userData = await axios.post('/auth/register', data);
