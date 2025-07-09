@@ -4,15 +4,10 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPassword";
-import { checkAuth } from "./store/slices/auth.slice";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import VerifyPage from "./pages/VerifyUser";
 const App = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(checkAuth());
-  }, [dispatch])
+
+  
   return (
     <>
       <Routes>
