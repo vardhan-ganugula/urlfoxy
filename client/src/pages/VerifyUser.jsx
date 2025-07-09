@@ -1,40 +1,29 @@
 import UCat from "../assets/imgs/uclip-cat.webp";
 import { GiToken } from "react-icons/gi";
 import { useParams } from "react-router-dom";
-import axios from "../libs/axios.lib";
 import { toast } from "react-hot-toast";
 import { useEffect } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
+import { useVerifyUserMutation } from "../store/apis";
 
 const VerifyPage = () => {
   const { verifyToken } = useParams();
-
+  const [verifyUserMutation] = useVerifyUserMutation();
+  
   useEffect(() => {
     const toastId = toast.loading("Validating");
-    const handleVerifyUser = async () => {
-      try {
-        const result = await axios.put("/auth/verify-user", {
-          token: verifyToken,
-        });
-        toast.success(result.data.message);
-      } catch (error) {
-        console.log(error);
-        const errorMessage =
-          error?.response?.data?.message ||
-          error?.request?.statusText ||
-          error?.message ||
-          "Something Went Wrong";
-        toast.error(errorMessage);
-      } finally {
-        toast.dismiss(toastId);
+    verifyUserMutation({token: verifyToken}).unwrap().then((res)=>{
+      toast.success(res.data.message)
+    }).catch((err)=>{
+      if(err.originalStatus === 429){
+        toast.error(err.data)
+      }else{
+        toast.error(err.data?.message || 'Something Went Wrong')
       }
-    };
-
-    handleVerifyUser();
-    return () => {
-      toast.dismiss(toastId);
-    };
-  }, [verifyToken]);
+    }).finally(()=>{
+      toast.dismiss(toastId)
+    })
+  }, [verifyToken, verifyUserMutation]);
 
   return (
     <>

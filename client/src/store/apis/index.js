@@ -46,10 +46,17 @@ const apiSlice = createApi({
           method: 'POST',
           body: data
         })
+      }),
+      verifyUser: builder.mutation({
+        query: (data) => ({
+          url: '/auth/verify-user',
+          method: 'PUT',
+          body: data
+        })
       })
     };
   },
 });
 
-export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation } = apiSlice;
+export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyUserMutation } = apiSlice;
 export default apiSlice;
