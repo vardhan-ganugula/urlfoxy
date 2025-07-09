@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import axios from "../libs/axios.lib.js";
 import { toast } from "react-hot-toast";
 import DefaultLayout from "../layouts/DefaultLayout.jsx";
+import { useForgotPasswordMutation } from "../store/apis/index.js";
 
 const ForgotPasswordPage = () => {
   const forgotPasswordSchema = z.object({
@@ -22,22 +22,34 @@ const ForgotPasswordPage = () => {
   } = useForm({
     resolver: zodResolver(forgotPasswordSchema),
   });
-  const handleLogin = useCallback(async (data) => {
-    const toastId = toast.loading("Request Processing");
-    try {
-      const response = await axios.post("/auth/forgot-password", data);
-      toast.success(response.data.message);
-    } catch (error) {
-      const errorMessage =
-        error?.response?.data?.message ||
-        error?.request?.statusText ||
-        error?.message ||
-        "Something Went Wrong";
-      toast.error(errorMessage);
-    } finally {
-      toast.dismiss(toastId);
-    }
-  }, []);
+  const [forgotTrigger] = useForgotPasswordMutation();
+  const handleLogin = useCallback(
+    async (data) => {
+      const toastId = toast.loading("Request Processing");
+      forgotTrigger(data)
+        .unwrap()
+        .then((info) => {
+          console.log(info)
+          if(info.status == 'error'){
+            toast.error(info.message);
+          }else{
+            toast.success(info.message);
+          }
+        })
+        .catch((err) => {
+          if (err.originalStatus == 429) {
+            toast.error("To many requests");
+          } else {
+            console.log(err)
+            toast.error(err.data.error);
+          }
+        })
+        .finally(() => {
+          toast.dismiss(toastId);
+        });
+    },
+    [forgotTrigger]
+  );
   return (
     <DefaultLayout>
       <main className=" md:pb-[300px] h-[80vh]  md:h-[110vh] bg-black w-full md:pt-24 ">

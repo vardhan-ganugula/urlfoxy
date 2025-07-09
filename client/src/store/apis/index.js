@@ -5,16 +5,44 @@ const apiSlice = createApi({
     baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include'
   }),
+  tagTypes: ['ProfileTag', 'LoginTag', 'SignupTag'],
   endpoints: function (builder) {
     return {
       getUserProfile: builder.query({
         query: function () {
           return { url: "/user/profile" };
         },
+        providesTags: ['ProfileTag']
       }),
+      login : builder.mutation({
+        query: (userData) => {
+          return {
+            url: '/auth/login',
+            method: 'POST',
+            body: userData
+          }
+        },
+        providesTags: ['LoginTag'],
+        invalidatesTags: ['ProfileTag']
+      }),
+      signUp : builder.mutation({
+        query: (userData)=> ({
+          url: '/auth/register',
+          method:'POST',
+          body: userData
+        }),
+        providesTags: ['SignupTag'],
+      }),
+      forgotPassword: builder.mutation({
+        query: (data) => ({
+          url:'/auth/forgot-password',
+          method: 'POST',
+          body: data
+        })
+      })
     };
   },
 });
 
-export const { useGetUserProfileQuery } = apiSlice;
+export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation } = apiSlice;
 export default apiSlice;

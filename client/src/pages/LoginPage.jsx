@@ -7,16 +7,11 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../schemas/auth.schema";
-import { toast } from "react-hot-toast";
-import axios from "../libs/axios.lib.js";
-import { useDispatch } from "react-redux";
-import {
-  authFailure,
-  authSuccess,
-  authRequest,
-} from "../store/slices/auth.slice.js";
-import { useNavigate } from "react-router-dom";
 import DefaultLayout from "../layouts/DefaultLayout.jsx";
+import { useLoginMutation } from "../store/apis/index.js";
+import { toast } from "react-hot-toast";
+import { authSuccess } from "../store/slices/auth.slice.js";
+import { useDispatch } from "react-redux";
 
 const LoginPage = () => {
   const [isVisiblePassword, setVisiblePassword] = useState(false);
@@ -27,28 +22,27 @@ const LoginPage = () => {
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
+
+  const [loginTrigger] = useLoginMutation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const handleLogin = useCallback(async (data) => {
-    const toastId = toast.loading("Authenticating...");
-    dispatch(authRequest());
-    try {
-      const result = await axios.post("/auth/login", data);
-      const userData = result.data;
-      toast.success("Login Success");
-      dispatch(authSuccess(userData.data));
-      navigate("/dashboard");
-    } catch (error) {
-      const errorMessage =
-        error?.response?.data?.error ||
-        error?.message ||
-        "Something Went Wrong";
-      toast.error(errorMessage);
-      dispatch(authFailure(errorMessage));
-    } finally {
-      toast.dismiss(toastId);
-    }
-  }, []);
+  const handleLogin = useCallback(
+    async (loginData) => {
+      const toastId = toast.loading("Authenticating...");
+      loginTrigger(loginData)
+        .unwrap()
+        .then((data) => {
+          toast.success(data.message);
+          dispatch(authSuccess(data?.data));
+        })
+        .catch((err) => {
+          toast.error(err.data.error);
+        })
+        .finally(() => {
+          toast.dismiss(toastId);
+        });
+    },
+    [loginTrigger, dispatch]
+  );
   return (
     <>
       <DefaultLayout>

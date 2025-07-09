@@ -9,14 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schemas/auth.schema";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import {
-  authFailure,
-  authRequest,
-  authSuccess,
-} from "../store/slices/auth.slice.js";
+import { authSuccess } from "../store/slices/auth.slice.js";
 import { toast } from "react-hot-toast";
-import axios from "../libs/axios.lib.js";
+
 import DefaultLayout from "../layouts/DefaultLayout.jsx";
+import { useSignUpMutation } from "../store/apis/index.js";
 
 const SignupPage = () => {
   const [isVisiblePassword, setVisiblePassword] = useState(false);
@@ -28,24 +25,25 @@ const SignupPage = () => {
     resolver: zodResolver(registerSchema),
   });
   const dispatch = useDispatch();
-  const handleSignup = useCallback(async (data) => {
-    dispatch(authRequest());
-    const toastId = toast.loading("Creating user...");
-    try {
-      const userData = await axios.post("/auth/register", data);
-      toast.success(userData.data.message);
-      dispatch(authSuccess(userData.data.data));
-    } catch (error) {
-      const errorMessage =
-        error?.response?.data?.error ||
-        error?.message ||
-        "Something Went Wrong";
-      toast.error(errorMessage);
-      dispatch(authFailure(errorMessage));
-    } finally {
-      toast.remove(toastId);
-    }
-  }, []);
+  const [signupTrigger] = useSignUpMutation();
+  const handleSignup = useCallback(
+    async (data) => {
+      const toastId = toast.loading("Creating Account...");
+      signupTrigger(data)
+        .unwrap()
+        .then((userData) => {
+          dispatch(authSuccess(userData.data));
+          toast.success(userData.message);
+        })
+        .catch((err) => {
+          toast.error(err.data.error);
+        })
+        .finally(() => {
+          toast.dismiss(toastId);
+        });
+    },
+    [dispatch, signupTrigger]
+  );
   return (
     <>
       <DefaultLayout>
