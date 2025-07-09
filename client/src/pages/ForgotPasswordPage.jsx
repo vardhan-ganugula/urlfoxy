@@ -29,7 +29,6 @@ const ForgotPasswordPage = () => {
       forgotTrigger(data)
         .unwrap()
         .then((info) => {
-          console.log(info)
           if(info.status == 'error'){
             toast.error(info.message);
           }else{

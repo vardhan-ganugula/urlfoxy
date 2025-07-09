@@ -3,13 +3,13 @@ import { MdOutlineMail } from "react-icons/md";
 import { PiPassword } from "react-icons/pi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useCallback, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema as ResetPasswordSchema } from "../schemas/auth.schema";
 import { toast } from "react-hot-toast";
-import axios from "../libs/axios.lib.js";
 import DefaultLayout from "../layouts/DefaultLayout.jsx";
+import { useResetPasswordMutation } from "../store/apis/index.js";
 
 const ResetPasswordPage = () => {
   const [isVisiblePassword, setVisiblePassword] = useState(false);
@@ -21,27 +21,21 @@ const ResetPasswordPage = () => {
     resolver: zodResolver(ResetPasswordSchema),
   });
   const { resetToken } = useParams();
+  const [resetPasswordTrigger] = useResetPasswordMutation();
+  const navigate = useNavigate();
   const handleLogin = useCallback(
     async (data) => {
       const toastId = toast.loading("Processing Request");
-      try {
-        const response = await axios.post("/auth/reset-password", {
-          ...data,
-          token: resetToken,
-        });
-        toast.success(response.data.message);
-      } catch (error) {
-        const errorMessage =
-          error?.response?.data?.message ||
-          error?.request?.statusText ||
-          error?.message ||
-          "Something Went Wrong";
-        toast.error(errorMessage);
-      } finally {
-        toast.dismiss(toastId);
-      }
+      resetPasswordTrigger({...data, token: resetToken}).unwrap().then((data)=>{
+        toast.success(data.message)
+        navigate('/login')
+      }).catch(err => {
+        toast.error(err.data.error)
+      }).finally(()=>{
+        toast.dismiss(toastId)
+      })
     },
-    [resetToken]
+    [resetToken, resetPasswordTrigger, navigate]
   );
 
   return (
