@@ -1,42 +1,45 @@
-import HomepageHeader from "../components/HomepageHeader";
-import Footer from "../components/Footer";
 import UCat from "../assets/imgs/uclip-cat.webp";
 import { MdOutlineMail } from "react-icons/md";
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
-import {useForm} from 'react-hook-form'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {z} from 'zod';
-import axios from '../libs/axios.lib.js'
-import {toast} from 'react-hot-toast';
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import axios from "../libs/axios.lib.js";
+import { toast } from "react-hot-toast";
+import DefaultLayout from "../layouts/DefaultLayout.jsx";
 
 const ForgotPasswordPage = () => {
   const forgotPasswordSchema = z.object({
     email: z.string().email({
-        message: 'Invalid Email'
-        
-    })
-  })
-  const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm({
-    resolver : zodResolver(forgotPasswordSchema)
-  })
+      message: "Invalid Email",
+    }),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
   const handleLogin = useCallback(async (data) => {
-    const toastId = toast.loading('Request Processing')
+    const toastId = toast.loading("Request Processing");
     try {
-      const response = await axios.post('/auth/forgot-password', data);
-      toast.success(response.data.message)
+      const response = await axios.post("/auth/forgot-password", data);
+      toast.success(response.data.message);
     } catch (error) {
-        const errorMessage = error?.response?.data?.message || error?.request?.statusText ||error?.message || 'Something Went Wrong';
-        toast.error(errorMessage)
-      } 
-    finally{
-      toast.dismiss(toastId)
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.request?.statusText ||
+        error?.message ||
+        "Something Went Wrong";
+      toast.error(errorMessage);
+    } finally {
+      toast.dismiss(toastId);
     }
-  },[])
+  }, []);
   return (
-    <>
-      <HomepageHeader />
+    <DefaultLayout>
       <main className=" md:pb-[300px] h-[80vh]  md:h-[110vh] bg-black w-full md:pt-24 ">
         <div className="md:w-[90%] lg:w-[70%] mx-auto h-full bg-zinc-950 border border-zinc-900 flex items-center md:flex-row flex-col w-full gap-4 justify-start rounded-lg p-2 overflow-hidden ">
           <div className="hidden md:block md:w-1/2 w-full shrink-0 rounded-lg bg-zinc-900 md:h-full p-10 ">
@@ -55,9 +58,12 @@ const ForgotPasswordPage = () => {
             <div className="absolute -right-3 -top-3 bg-blue-400 opacity-45 h-[340px] w-[340px] rounded-full blur-[90px]"></div>
             <div className="rounded-lg absolute top-0 left-0 backdrop-blur-[200px] h-full w-full text-white">
               <div className="w-2/3 mx-auto mt-28">
-                <h4 className="font-bold text-3xl uppercase">Send Reset Email</h4>
+                <h4 className="font-bold text-3xl uppercase">
+                  Send Reset Email
+                </h4>
                 <div className="">
-                  <form className="flex w-full flex-col mt-18 gap-2"
+                  <form
+                    className="flex w-full flex-col mt-18 gap-2"
                     onSubmit={handleSubmit(handleLogin)}
                   >
                     <div className="w-full inline-flex bg-white/5 px-5 py-3 rounded-md">
@@ -70,18 +76,19 @@ const ForgotPasswordPage = () => {
                         placeholder="your email address"
                         autoComplete="email"
                         id="email"
-
-                        {
-                          ...register('email')
-                        }
+                        {...register("email")}
                       />
                     </div>
-                    <p className="text-red-500">{
-                        errors.email && errors.email.message
-                      }</p>
+                    <p className="text-red-500">
+                      {errors.email && errors.email.message}
+                    </p>
                     <button
                       disabled={isSubmitting}
-                      className={`rounded px-2 w-28 text-sm py-3 mt-2 hover:bg-blue-700 text-white  ${isSubmitting ? 'cursor-not-allowed bg-blue-900' : ' bg-blue-600 cursor-pointer'} disabled:bg-blue-900`}
+                      className={`rounded px-2 w-28 text-sm py-3 mt-2 hover:bg-blue-700 text-white  ${
+                        isSubmitting
+                          ? "cursor-not-allowed bg-blue-900"
+                          : " bg-blue-600 cursor-pointer"
+                      } disabled:bg-blue-900`}
                       type="submit"
                     >
                       Send Email
@@ -95,15 +102,13 @@ const ForgotPasswordPage = () => {
                       Register
                     </Link>
                   </div>
-                  
                 </div>
               </div>
             </div>
           </div>
         </div>
       </main>
-      <Footer />
-    </>
+    </DefaultLayout>
   );
 };
 
