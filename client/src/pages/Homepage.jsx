@@ -1,15 +1,11 @@
-import Footer from "../components/Footer";
 import HeroPage from "../components/HeroPage";
-import HomepageHeader from "../components/HomepageHeader";
+import DefaultLayout from "../layouts/DefaultLayout";
 
 const Homepage = () => {
   return (
-    <main>
-      <HomepageHeader />
+    <DefaultLayout>
       <HeroPage />
-      <Footer />
-
-    </main>
+    </DefaultLayout>
   );
 };
 
