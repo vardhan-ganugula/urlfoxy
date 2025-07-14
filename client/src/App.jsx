@@ -5,6 +5,7 @@ import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPassword";
 import VerifyPage from "./pages/VerifyUser";
+import DashboardPage from "./pages/DashboardPage";
 const App = () => {
 
   
@@ -20,6 +21,7 @@ const App = () => {
           path="/reset-password/:resetToken"
           element={<ResetPasswordPage />}
         />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
     </>
   );
