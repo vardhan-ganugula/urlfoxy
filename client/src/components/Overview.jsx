@@ -4,7 +4,9 @@ import { IoMdLink } from "react-icons/io";
 import { TfiStatsUp } from "react-icons/tfi";
 import analyticsImage from "../assets/imgs/stats.webp";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 const Overview = () => {
+  const navigate = useNavigate();
   return (
     <section className="flex justify-center p-9 w-full">
       <div className="w-full md:w-[1000px] flex p-5 text-white flex-col items-center bg-zinc-900 rounded">
@@ -57,7 +59,9 @@ const Overview = () => {
               <p className="text-sm text-zinc-400 mt-5 mb-9">
                 Learn from your links and build better digital campaigns
               </p>
-              <Button>Start for free</Button>
+              <Button onClick={()=>{
+                navigate('/register')
+              }}>Start for free</Button>
             </div>
           </div>
           <div className="items-center w-[300px] ">

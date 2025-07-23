@@ -7,6 +7,7 @@ import InfoBlock from "./InfoBlock";
 import Overview from "./Overview";
 import Accordion from "./Accordion";
 import Footer from "./Footer";
+import { useNavigate } from "react-router-dom";
 
 const HeroPage = () => {
   gsap.registerPlugin(useGSAP);
@@ -58,7 +59,7 @@ const HeroPage = () => {
       }
     };
   }, []);
-
+  const navigate = useNavigate();
   return (
     <main className="bg-black min-h-screen w-full flex flex-col gap-5 pb-32 md:pb-[300px]">
       <div
@@ -81,7 +82,9 @@ const HeroPage = () => {
           <h4 className="text-zinc-400 mt-9 mb-18 md:mb-9 text-xs md:text-md">
             Simplify Links. Amplify Impact.
           </h4>
-          <Button>Get Started</Button>
+          <Button onClick={() => {
+            navigate('/login')
+          }}>Get Started</Button>
         </div>
       </section>
 
