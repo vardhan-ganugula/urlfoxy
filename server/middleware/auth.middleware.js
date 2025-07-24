@@ -9,7 +9,7 @@ export const authMiddleware = async (req, res, next) => {
   if (!accessToken && !refreshToken) {
     return res.status(401).json({ status: 'error', message: "Unauthorized" });
   }
-  if (accessToken && accessToken !== "undefined") {
+  else if (accessToken && accessToken !== "undefined") {
     const decoded = decodeJWTtoken(accessToken);
     try {
       const session = await sessionModel.findOne({ _id: decoded.sessionId });
@@ -30,11 +30,10 @@ export const authMiddleware = async (req, res, next) => {
     } catch (error) {
       return res.status(401).json({ status: 'error', message: "Unauthorized" });
     }
-    next();
   }
 
 
-  if (!accessToken && refreshToken) {
+  else if (!accessToken && refreshToken) {
     const decoded = decodeJWTtoken(refreshToken);
     try {
       const session = await sessionModel.findOne({ _id: decoded.sessionId });
@@ -83,7 +82,6 @@ export const authMiddleware = async (req, res, next) => {
     } catch (error) {
       return res.status(401).json({ status: 'error' , message: "Unauthorized" });
     }
-    next();
   }
   next();
 };
