@@ -9,6 +9,7 @@ import cors from "cors";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { authRateLimit } from "../utils/rateLimit.util.js";
 import { runEmailWorker } from "../jobs/email.jobs.js";
+import { DomainRouter } from "../routes/domains.route.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -29,7 +30,7 @@ app.use(
 runEmailWorker();
 app.use("/api/auth", authRateLimit, authRoute);
 app.use("/api/user", authMiddleware, userRoute);
-
+app.use("/api/domains",DomainRouter)
 if (ENVIRONMENT === "development") {
   app.get("/", (req, res) => {
     res.json("working");
