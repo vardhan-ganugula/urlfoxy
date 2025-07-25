@@ -3,19 +3,26 @@ import { DOMAIN } from "../utils/constants.js";
 import { generateTXTRecord } from "../utils/generate.util.js";
 import dns from "dns/promises";
 
-export const handleDomainCheck = (req, res) => {
+export const handleDomainCheck = async (req, res) => {
   const { domain } = req.query;
 
-  if (domain) {
-    res.status(200).json({
-      message: "Domain can be processed",
-      domain: domain,
-    });
-  } else {
-    res.status(403).json({
-      message: "Unspecified domain",
+  try {
+    const isValidDomain = await DomainModel.findOne({domain, sslEnabled: true});
+    if(isValidDomain) {
+      return res.status(200).json({
+        message: "Domain is valid and SSL is enabled",
+        domain: isValidDomain.domain,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error checking domain",
+      error: error.message || "Something went wrong",
     });
   }
+  return res.status(403).json({
+    message: "Unspecified domain",
+  });
 };
 
 export const handleDomainAdd = async (req, res) => {
