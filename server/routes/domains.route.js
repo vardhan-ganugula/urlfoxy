@@ -9,7 +9,6 @@ app.get('/verify-domain', authMiddleware, handleDomainVefify)
 app.delete('/delete-domain', authMiddleware, handleDeleteDomain); 
 app.get('/', authMiddleware, handleGETDomains)
 app.post('/issue-ssl-certificate', authMiddleware, handleIssueSSLCertificate);
-// TODO: add issue ssl certificate route
 
 
 
