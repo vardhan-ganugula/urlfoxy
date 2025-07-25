@@ -61,7 +61,7 @@ export const handleDomainAdd = async (req, res) => {
   });
 };
 
-export const handleTXTVefify = async (req, res) => {
+export const handleDomainVefify = async (req, res) => {
   const { domain } = req.query;
   if (!domain) {
     return res.status(400).json({
@@ -107,6 +107,11 @@ export const handleTXTVefify = async (req, res) => {
       });
     }
 
+    if (isVerifiedTXT && isCnameVerified) {
+      domainData.verified = true;
+      await domainData.save();
+    }
+
     return res.status(200).json({
       message: "Domain verification status",
       isVerifiedTXT,
@@ -121,3 +126,31 @@ export const handleTXTVefify = async (req, res) => {
     });
   }
 };
+
+
+export const handleDeleteDomain = async (req, res) => {
+  const { domain } = req.query;
+  if (!domain) {
+    return res.status(400).json({
+      message: "Domain is required for deletion",
+    });
+  }
+
+  try {
+    const deletedDomain = await DomainModel.findOneAndDelete({ domain, userId: req.user._id });
+    if (!deletedDomain) {
+      return res.status(404).json({
+        message: "Domain not found or not owned by user",
+      });
+    }
+    return res.status(200).json({
+      message: "Domain deleted successfully",
+      data: deletedDomain,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error deleting domain",
+      error: error.message || "Something went wrong",
+    });
+  }
+}
