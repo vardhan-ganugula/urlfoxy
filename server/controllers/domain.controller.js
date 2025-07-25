@@ -83,9 +83,7 @@ export const handleDomainVefify = async (req, res) => {
 
     try {
       const txtRecords = await dns.resolveTxt(domain);
-      isVerifiedTXT = txtRecords.some((record) =>
-        record.includes(txtRecord)
-      );
+      isVerifiedTXT = txtRecords.some((record) => record.includes(txtRecord));
     } catch (err) {
       console.error("TXT record resolution failed:", err);
       return res.status(500).json({
@@ -127,7 +125,6 @@ export const handleDomainVefify = async (req, res) => {
   }
 };
 
-
 export const handleDeleteDomain = async (req, res) => {
   const { domain } = req.query;
   if (!domain) {
@@ -137,7 +134,10 @@ export const handleDeleteDomain = async (req, res) => {
   }
 
   try {
-    const deletedDomain = await DomainModel.findOneAndDelete({ domain, userId: req.user._id });
+    const deletedDomain = await DomainModel.findOneAndDelete({
+      domain,
+      userId: req.user._id,
+    });
     if (!deletedDomain) {
       return res.status(404).json({
         message: "Domain not found or not owned by user",
@@ -153,4 +153,55 @@ export const handleDeleteDomain = async (req, res) => {
       error: error.message || "Something went wrong",
     });
   }
-}
+};
+
+export const handleGETDomains = async (req, res) => {
+  try {
+    const domains = await DomainModel.find({ userId: req.user._id });
+    return res.status(200).json({
+      message: "Domains retrieved successfully",
+      data: domains,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error retrieving domains",
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
+export const handleIssueSSLCertificate = async (req, res) => {
+  const { domain } = req.body;
+  if (!domain) {
+    return res.status(400).json({
+      status: "error",
+      message: "Domain is required for SSL certificate issuance",
+    });
+  }
+
+  try {
+    const result = await DomainModel.findOneAndUpdate(
+      { domain, userId: req.user._id, verified: true },
+      { sslEnabled: true },
+      { new: true }
+    );
+    if (result) {
+      return res.status(200).json({
+        status: "success",
+        message: "SSL certificate issued successfully",
+        domain,
+      });
+    } else {
+      return res.status(404).json({
+        status: "error",
+        message: "Domain not found or not verified",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error issuing SSL certificate",
+      status: "error",
+      error: error.message || "Something went wrong",
+    });
+  }
+};
