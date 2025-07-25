@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { SESSION_TOKEN_EXPIRATION } from "../utils/constants";
+import { SESSION_TOKEN_EXPIRATION } from "../utils/constants.js";
 
 const sessionSchema = new Schema(
   {
