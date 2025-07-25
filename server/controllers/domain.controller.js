@@ -97,7 +97,6 @@ export const handleTXTVefify = async (req, res) => {
 
     try {
       const cnameRecords = await dns.resolveCname(domain);
-      console.log("CNAME Records:", cnameRecords);
       isCnameVerified = cnameRecords.includes(DOMAIN);
     } catch (err) {
       console.error("CNAME resolution failed:", err);
