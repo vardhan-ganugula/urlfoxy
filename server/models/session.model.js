@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { SESSION_TOKEN_EXPIRATION } from "../utils/constants";
 
 const sessionSchema = new Schema(
   {
@@ -25,7 +26,7 @@ const sessionSchema = new Schema(
     },
     expiresAt: {
       type: Date,
-      default: Date.now() + 60 * 1000,
+      default: Date.now() + SESSION_TOKEN_EXPIRATION,
     },
   },
   {
