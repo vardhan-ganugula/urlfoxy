@@ -30,7 +30,7 @@ app.use(
 runEmailWorker();
 app.use("/api/auth", authRateLimit, authRoute);
 app.use("/api/user", authMiddleware, userRoute);
-app.use("/api/domains",DomainRouter)
+app.use("/api/domains",authRateLimit, DomainRouter)
 if (ENVIRONMENT === "development") {
   app.get("/", (req, res) => {
     res.json("working");
