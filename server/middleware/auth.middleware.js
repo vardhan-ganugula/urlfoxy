@@ -3,8 +3,10 @@ import authModel from "../models/user.model.js";
 import sessionModel from "../models/session.model.js";
 import { decodeJWTtoken, generateAccessToken } from "../utils/auth.utils.js";
 import { ACCESS_TOKEN_EXPIRATION, cookieOptions, REFRESH_TOKEN_EXPIRATION } from "../utils/constants.js";
+import DeviceDetector from "node-device-detector";
 
 export const authMiddleware = async (req, res, next) => {
+
   const { accessToken, refreshToken } = req.cookies;
   if (!accessToken && !refreshToken) {
     return res.status(401).json({ status: 'error', message: "Unauthorized" });
@@ -34,6 +36,16 @@ export const authMiddleware = async (req, res, next) => {
 
 
   else if (!accessToken && refreshToken) {
+    const detector = new DeviceDetector({
+        clientIndexes: true,
+        deviceIndexes: true,
+        osIndexes: true,
+        deviceAliasCode: false,
+        deviceTrusted: false,
+        deviceInfo: false,
+        maxUserAgentSize: 500,
+      });
+      const device = detector?.os?.name || "Unknown";
     const decoded = decodeJWTtoken(refreshToken);
     try {
       const session = await sessionModel.findOne({ _id: decoded.sessionId });
@@ -44,7 +56,6 @@ export const authMiddleware = async (req, res, next) => {
       console.log("error", error);
       return res.status(401).json({ status: 'error', message: "Unauthorized" });
     }
-
     try {
       const user = await authModel.findOne({ _id: decoded.id });
       if (!user) {
@@ -61,8 +72,8 @@ export const authMiddleware = async (req, res, next) => {
         valid: true,
         userAgent: req.headers["user-agent"],
         ipAddress: req.ip,
+        device
       });
-
         const newAccessToken = generateAccessToken({
             id: decoded.id,
             sessionId: newSession._id,
@@ -80,6 +91,7 @@ export const authMiddleware = async (req, res, next) => {
         res.cookie("refreshToken", newRefreshToken, refreshCookieOption);
 
     } catch (error) {
+      console.log(error)
       return res.status(401).json({ status: 'error' , message: "Unauthorized" });
     }
   }
