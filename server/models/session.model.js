@@ -26,7 +26,7 @@ const sessionSchema = new Schema(
     },
     expiresAt: {
       type: Date,
-      default: Date.now() + SESSION_TOKEN_EXPIRATION,
+      default: () => Date.now() + SESSION_TOKEN_EXPIRATION,
     },
   },
   {
