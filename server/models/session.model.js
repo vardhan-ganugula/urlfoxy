@@ -34,7 +34,7 @@ const sessionSchema = new Schema(
   }
 );
 
-sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 60 });
+sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const sessionModel = model("Session", sessionSchema);
 export default sessionModel;
