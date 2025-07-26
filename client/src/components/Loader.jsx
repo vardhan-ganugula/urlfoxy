@@ -2,15 +2,18 @@
 const Loader = ({
     height = '200',
     width = '200',
+    bgColor = 'white'
 
 }) => {
+
   return (
     <div
     className='p-1 bg-transparent relative w-full min-h-[400px] flex justify-center items-center'
     >
-        <div className='border-t-2  border-white rounded-full m-5 animate-spin' style={{
+        <div className={`border-t-2 rounded-full m-5 animate-spin`} style={{
             height: height+'px',
-            width: width+'px'
+            width: width+'px',
+            borderColor: bgColor
         }}>
 
         </div>
