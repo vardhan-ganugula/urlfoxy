@@ -19,8 +19,8 @@ const Sidebar = () => {
           <div className="flex-grow">
             <ul className="flex flex-col gap-3 text-md">
               {sideNavLinks.map((itm, idx) => (
-                <li className="inline-block rounded-lg hover:bg-white hover:text-black text-white p-2 cursor-pointer pl-3">
-                  <NavLink to={itm.link} key={idx} className={
+                <li  key={idx} className="inline-block rounded-lg hover:bg-white hover:text-black text-white p-2 cursor-pointer pl-3">
+                  <NavLink to={itm.link} className={
                     ({isActive}) => (isActive ? 'pl-4 before:absolute before:contents-[*] before:h-6 before:rounded-4xl hover:before:bg-blue-600 before:w-1 before:bg-white before:left-0 relative before:top-0' : '') + ' flex gap-2' 
                   } >
                     {React.createElement(itm.icon, {

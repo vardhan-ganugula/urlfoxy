@@ -30,7 +30,7 @@ export const defaultSidebarLinks = [
         icon: RiChat1Line
     },{
         name: 'Analytics',
-        link: 'analytics',
+        link: '/analytics',
         icon: SiGoogleanalytics
     }
 ]
