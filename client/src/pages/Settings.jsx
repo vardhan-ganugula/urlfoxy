@@ -3,6 +3,8 @@ import Loader from "../components/Loader";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { useGetUserProfileQuery } from "../store/apis";
 import { useNavigate } from "react-router-dom";
+import ProfileBlock from "../components/ProfileBlock";
+import Domains from "../components/Domains";
 
 const Settings = () => {
   const { data, isLoading, isError } = useGetUserProfileQuery();
@@ -10,12 +12,16 @@ const Settings = () => {
   const profileOptions = [
     {
       name: "Profile",
-      component: <Loader bgColor="red" />,
+      component: <ProfileBlock />,
     },
     {
       name: "Credits",
       component: <Loader bgColor="green" height="400" width="400" />,
     },
+    {
+      name: "Domains",
+      component : <Domains />
+    }
   ];
   const navigate = useNavigate();
   useEffect(() => {
@@ -53,7 +59,7 @@ const Settings = () => {
               </ul>
             </div>
           </div>
-          <div className="flex-grow shrink-0 bg-zinc-800 p-2 rounded">
+          <div className="flex-grow shrink-0 p-2 rounded">
             {
                 profileOptions[currentOption].component
             }
