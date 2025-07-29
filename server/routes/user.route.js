@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import { handleGetUserSession } from '../controllers/user.controller.js';
 
 
 const router = Router();
@@ -11,7 +12,7 @@ router.get('/profile', (req, res) => {
     }); 
 })
 
-
+router.get('/sessions', handleGetUserSession)
 
 
 export default router;
