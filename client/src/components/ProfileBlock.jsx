@@ -3,6 +3,7 @@ import { useGetUserProfileQuery } from "../store/apis";
 import Loader from "./Loader";
 import Button from "./Button";
 import { format } from "date-fns";
+import UserSessions from "./UserSessions";
 const ProfileBlock = () => {
   const { data, isLoading } = useGetUserProfileQuery();
   const [username, setUsername] = useState(data.user.username || 'platform user');
@@ -15,8 +16,8 @@ const ProfileBlock = () => {
   
   return (
     <section className="flex flex-col gap-5">
-      <div className="bg-zinc-800 rounded">
-        <div className="flex justify-between p-2">
+      <div className="bg-zinc-900 rounded border border-zinc-700">
+        <div className="flex justify-between p-2 border-b border-zinc-700">
           <div className="flex gap-3 p-2 justify-start items-center">
             <span className="h-9 inline-block grow-0 w-1.5 bg-amber-500"></span>
             <span>Profile</span>
@@ -54,6 +55,7 @@ const ProfileBlock = () => {
                   type="email"
                   id="email"
                   className="border rounded border-zinc-700 px-2 py-2"
+                  readOnly
                   value={data?.user?.email || ""}
                 />
               </div>
@@ -79,7 +81,7 @@ const ProfileBlock = () => {
         </div>
       </div>
       <div className="bg-zinc-800 rounded">
-          {/* TODO: Implement sessions here */}
+          <UserSessions />
       </div>
     </section>
   );

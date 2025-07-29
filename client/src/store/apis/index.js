@@ -53,10 +53,16 @@ const apiSlice = createApi({
           method: 'PUT',
           body: data
         })
+      }),
+      getUserSessions: builder.query({
+        query: () => ({
+          url: '/user/sessions'
+        }),
+        providesTags: ['ProfileTag']
       })
     };
   },
 });
 
-export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyUserMutation } = apiSlice;
+export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyUserMutation, useGetUserSessionsQuery } = apiSlice;
 export default apiSlice;
