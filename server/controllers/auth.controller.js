@@ -121,10 +121,11 @@ export const handleUserLogin = async (req, res) => {
     sessionDetails = await sessionModel.create({
       userId: userDetails._id,
       userAgent,
-      ipAddress: req.headers.get('X-Real-IP') || req.ip,
+      ipAddress: req.headers['X-Real-IP'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip,
       device,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       error: "Internal server error",
       message: "error while creating session",
