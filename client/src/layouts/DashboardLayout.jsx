@@ -23,9 +23,9 @@ export const DashboardLayout = ({ children }) => {
   }
 
   return (
-    <div className="w-screen h-screen flex bg-zinc-900 text-white">
+    <div className="w-screen h-screen flex bg-zinc-900 text-white ">
       <Sidebar />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow h-full overflow-y-scroll">{children}</main>
     </div>
   );
 };

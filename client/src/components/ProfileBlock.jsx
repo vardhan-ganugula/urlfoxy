@@ -15,9 +15,9 @@ const ProfileBlock = () => {
   }
   
   return (
-    <section className="flex flex-col gap-5">
-      <div className="bg-zinc-900 rounded border border-zinc-700">
-        <div className="flex justify-between p-2 border-b border-zinc-700">
+    <section className="flex flex-col gap-5 overflow-hidden">
+      <div className="bg-zinc-900 rounded border border-amber-500">
+        <div className="flex justify-between p-2 border-b border-zinc-700 grow-0 ">
           <div className="flex gap-3 p-2 justify-start items-center">
             <span className="h-9 inline-block grow-0 w-1.5 bg-amber-500"></span>
             <span>Profile</span>
@@ -27,7 +27,7 @@ const ProfileBlock = () => {
               Last Updated :{" "}
               {format(
                 new Date(data?.user?.updatedAt),
-                "MMMM / dd/ yyyy HH:MM:SS"
+                "MMMM/dd/yyyy HH:MM:SS"
               )}{" "}
             </div>
           )}
@@ -80,7 +80,7 @@ const ProfileBlock = () => {
           </form>
         </div>
       </div>
-      <div className="bg-zinc-800 rounded">
+      <div className="bg-zinc-800 rounded border border-amber-500 overflow-hidden grow max-h-1/2">
           <UserSessions />
       </div>
     </section>

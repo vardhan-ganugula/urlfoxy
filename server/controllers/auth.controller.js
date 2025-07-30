@@ -115,12 +115,13 @@ export const handleUserLogin = async (req, res) => {
     deviceInfo: false,
     maxUserAgentSize: 500,
   });
-  const device = detector?.os?.name || "Unknown";
+  const result = detector.detect(userAgent);
+  const device = result?.os?.name || "Unknown";
   try {
     sessionDetails = await sessionModel.create({
       userId: userDetails._id,
       userAgent,
-      ipAddress: req.ip,
+      ipAddress: req.headers.get('X-Real-IP') || req.ip,
       device,
     });
   } catch (error) {
