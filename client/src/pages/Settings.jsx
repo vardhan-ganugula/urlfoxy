@@ -35,7 +35,7 @@ const Settings = () => {
 
   return (
     <DashboardLayout>
-      <div className="w-full h-full pt-28 p-10">
+      <div className="w-full overflow-hidden pt-8 p-10">
         <div className="flex gap-10 w-full p-2">
           <div className="w-[300px] h-fit bg-zinc-800 rounded flex gap-3 items-center flex-col py-5">
             <div className="rounded-full overflow-hidden">
@@ -59,7 +59,7 @@ const Settings = () => {
               </ul>
             </div>
           </div>
-          <div className="flex-grow shrink-0 p-2 rounded">
+          <div className="flex-grow shrink-0 p-2 rounded h-[90vh] overflow-y-auto">
             {
                 profileOptions[currentOption].component
             }

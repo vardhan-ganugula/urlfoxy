@@ -14,7 +14,7 @@ export const authMiddleware = async (req, res, next) => {
   else if (accessToken && accessToken !== "undefined") {
     const decoded = decodeJWTtoken(accessToken);
     try {
-      const session = await sessionModel.findOne({ _id: decoded.sessionId });
+      const session = await sessionModel.findOne({ _id: decoded.sessionId, valid: true });
       if (!session) {
         return res.status(401).json({ message: "Unauthorized", status: "error" });
       }
@@ -48,7 +48,7 @@ export const authMiddleware = async (req, res, next) => {
       const device = detector?.os?.name || "Unknown";
     const decoded = decodeJWTtoken(refreshToken);
     try {
-      const session = await sessionModel.findOne({ _id: decoded.sessionId });
+      const session = await sessionModel.findOne({ _id: decoded.sessionId, valid: true });
       if (!session) {
         return res.status(401).json({ message: "Unauthorized", status: "error" });
       }

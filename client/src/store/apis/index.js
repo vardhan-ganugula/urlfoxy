@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import toast from "react-hot-toast";
 
 const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
@@ -59,10 +60,30 @@ const apiSlice = createApi({
           url: '/user/sessions'
         }),
         providesTags: ['ProfileTag']
+      }),
+      terminateSession: builder.mutation({
+        query: (sessionId) => ({
+          url: `/user/sessions/${sessionId}`,
+          method: 'DELETE'
+        }),
+        invalidatesTags: ['ProfileTag'],
+        async onQueryStarted(sessionId, { queryFulfilled }) {
+          const toastId = toast.loading('Terminating Session');
+          try {
+            await queryFulfilled;
+            toast.success('Session terminated successfully', { id: toastId });
+          } catch (error) {
+            console.log(error);
+            toast.error('Failed to terminate session', { id: toastId });
+          }
+          finally{
+            toast.dismiss(toastId);
+          }
+        }
       })
     };
   },
 });
 
-export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyUserMutation, useGetUserSessionsQuery } = apiSlice;
+export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyUserMutation, useGetUserSessionsQuery, useTerminateSessionMutation } = apiSlice;
 export default apiSlice;
