@@ -166,11 +166,13 @@ export const handleGETDomains = async (req, res) => {
   try {
     const domains = await DomainModel.find({ userId: req.user._id });
     return res.status(200).json({
+      status: "success",
       message: "Domains retrieved successfully",
       data: domains,
     });
   } catch (error) {
     return res.status(500).json({
+      status: "error",
       message: "Error retrieving domains",
       error: error.message || "Something went wrong",
     });

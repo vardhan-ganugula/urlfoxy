@@ -6,7 +6,7 @@ const apiSlice = createApi({
     baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include'
   }),
-  tagTypes: ['ProfileTag', 'LoginTag', 'SignupTag'],
+  tagTypes: ['ProfileTag', 'LoginTag', 'SignupTag', 'Domains',],
   endpoints: function (builder) {
     return {
       getUserProfile: builder.query({
