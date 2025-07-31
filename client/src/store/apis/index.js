@@ -71,10 +71,10 @@ const apiSlice = createApi({
           const toastId = toast.loading('Terminating Session');
           try {
             await queryFulfilled;
-            toast.success('Session terminated successfully', { id: toastId });
+            toast.success('Session terminated successfully');
           } catch (error) {
             console.log(error);
-            toast.error('Failed to terminate session', { id: toastId });
+            toast.error('Failed to terminate session');
           }
           finally{
             toast.dismiss(toastId);

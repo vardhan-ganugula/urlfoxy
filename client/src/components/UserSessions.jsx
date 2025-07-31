@@ -1,6 +1,7 @@
 import React from 'react'
 import { useGetUserSessionsQuery, useTerminateSessionMutation } from '../store/apis'
 import Loader from './Loader';
+import { detectBrowserFromUserAgent } from '../utils/userAgentParser';
 
 const UserSessions = () => {
     const {isLoading, data} = useGetUserSessionsQuery();
@@ -11,8 +12,6 @@ const UserSessions = () => {
     }
     const sessiondata = data?.data || [];
     const handleTerminateSession = (sessionId) => {
-        // Handle session termination logic
-        console.log(sessionId)
         terminateSession(sessionId)
     };
 
@@ -88,7 +87,7 @@ const UserSessions = () => {
                                                 <span className="mr-2 text-lg">{getDeviceIcon(session.device)}</span>
                                                 <div>
                                                     <div className="font-medium text-white">{session.device || 'Unknown Device'}</div>
-                                                    <div className="text-xs text-zinc-400">{session.browser || 'Unknown Browser'}</div>
+                                                    <div className="text-xs text-zinc-400">{detectBrowserFromUserAgent(session.userAgent).name || 'Unknown Browser'}</div>
                                                 </div>
                                             </div>
                                         </td>
