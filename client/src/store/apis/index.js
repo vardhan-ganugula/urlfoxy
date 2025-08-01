@@ -6,7 +6,7 @@ const apiSlice = createApi({
     baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include'
   }),
-  tagTypes: ['ProfileTag', 'LoginTag', 'SignupTag'],
+  tagTypes: ['ProfileTag', 'LoginTag', 'SignupTag', 'Domains',],
   endpoints: function (builder) {
     return {
       getUserProfile: builder.query({
@@ -71,10 +71,10 @@ const apiSlice = createApi({
           const toastId = toast.loading('Terminating Session');
           try {
             await queryFulfilled;
-            toast.success('Session terminated successfully', { id: toastId });
+            toast.success('Session terminated successfully');
           } catch (error) {
             console.log(error);
-            toast.error('Failed to terminate session', { id: toastId });
+            toast.error('Failed to terminate session');
           }
           finally{
             toast.dismiss(toastId);
