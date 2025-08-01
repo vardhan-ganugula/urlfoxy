@@ -46,8 +46,8 @@ export const authMiddleware = async (req, res, next) => {
         maxUserAgentSize: 500,
       });
       const device = detector?.os?.name || "Unknown";
-    const decoded = decodeJWTtoken(refreshToken);
-    try {
+      try {
+      const decoded = decodeJWTtoken(refreshToken);
       const session = await sessionModel.findOne({ _id: decoded.sessionId, valid: true });
       if (!session) {
         return res.status(401).json({ message: "Unauthorized", status: "error" });
