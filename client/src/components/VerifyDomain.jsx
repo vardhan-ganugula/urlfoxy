@@ -5,7 +5,7 @@ import {z} from "zod";
 import Button from "./Button";
 import { useVerifyDomainMutation } from "../store/apis/domains";
 
-const VerifyDomain = ({ domain }) => {
+const VerifyDomain = ({ domain, onNext }) => {
   const [verifyTrigger] = useVerifyDomainMutation();
     const schema = z.object({
         domain: z
@@ -73,6 +73,12 @@ const VerifyDomain = ({ domain }) => {
           </div>
         </form>
       </div>
+      <div className="px-6 py-4 flex justify-between text-zinc-400 flex-shrink-0">
+              <span>move to next step</span>
+              <span>
+                <Button variant="squared" onClick={() => onNext()}>Next</Button>
+              </span>
+            </div>
     </section>
   );
 };
