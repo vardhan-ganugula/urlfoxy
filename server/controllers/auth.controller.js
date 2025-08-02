@@ -115,15 +115,17 @@ export const handleUserLogin = async (req, res) => {
     deviceInfo: false,
     maxUserAgentSize: 500,
   });
-  const device = detector?.os?.name || "Unknown";
+  const result = detector.detect(userAgent);
+  const device = result?.os?.name || "Unknown";
   try {
     sessionDetails = await sessionModel.create({
       userId: userDetails._id,
       userAgent,
-      ipAddress: req.ip,
+      ipAddress: req.headers['X-Real-IP'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip,
       device,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       error: "Internal server error",
       message: "error while creating session",

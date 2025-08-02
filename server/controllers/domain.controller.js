@@ -69,7 +69,7 @@ export const handleDomainAdd = async (req, res) => {
 };
 
 export const handleDomainVefify = async (req, res) => {
-  const { domain } = req.query;
+  const domain = req?.query?.domain || req?.body?.domain;
   if (!domain) {
     return res.status(400).json({
       message: "Domain is required for verification",
@@ -118,7 +118,8 @@ export const handleDomainVefify = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Domain verification status",
+      message: "Domain verification status TXT " + (isVerifiedTXT ? "verified" : "not verified") +
+        " and CNAME " + (isCnameVerified ? "verified" : "not verified"),
       isVerifiedTXT,
       isCnameVerified,
       status: "success",
@@ -166,11 +167,13 @@ export const handleGETDomains = async (req, res) => {
   try {
     const domains = await DomainModel.find({ userId: req.user._id });
     return res.status(200).json({
+      status: "success",
       message: "Domains retrieved successfully",
       data: domains,
     });
   } catch (error) {
     return res.status(500).json({
+      status: "error",
       message: "Error retrieving domains",
       error: error.message || "Something went wrong",
     });
@@ -178,7 +181,7 @@ export const handleGETDomains = async (req, res) => {
 };
 
 export const handleIssueSSLCertificate = async (req, res) => {
-  const { domain } = req.body;
+  const domain = req.body?.domain || req.query?.domain;
   if (!domain) {
     return res.status(400).json({
       status: "error",

@@ -26,7 +26,7 @@ const sessionSchema = new Schema(
     },
     expiresAt: {
       type: Date,
-      default: Date.now() + SESSION_TOKEN_EXPIRATION,
+      default: () => Date.now() + SESSION_TOKEN_EXPIRATION,
     },
   },
   {
@@ -34,7 +34,7 @@ const sessionSchema = new Schema(
   }
 );
 
-sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 60 });
+sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const sessionModel = model("Session", sessionSchema);
 export default sessionModel;

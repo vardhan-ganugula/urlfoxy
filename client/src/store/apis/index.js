@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import toast from "react-hot-toast";
 
 const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include'
   }),
-  tagTypes: ['ProfileTag', 'LoginTag', 'SignupTag'],
+  tagTypes: ['ProfileTag', 'LoginTag', 'SignupTag', 'Domains',],
   endpoints: function (builder) {
     return {
       getUserProfile: builder.query({
@@ -53,10 +54,36 @@ const apiSlice = createApi({
           method: 'PUT',
           body: data
         })
+      }),
+      getUserSessions: builder.query({
+        query: () => ({
+          url: '/user/sessions'
+        }),
+        providesTags: ['ProfileTag']
+      }),
+      terminateSession: builder.mutation({
+        query: (sessionId) => ({
+          url: `/user/sessions/${sessionId}`,
+          method: 'DELETE'
+        }),
+        invalidatesTags: ['ProfileTag'],
+        async onQueryStarted(sessionId, { queryFulfilled }) {
+          const toastId = toast.loading('Terminating Session');
+          try {
+            await queryFulfilled;
+            toast.success('Session terminated successfully');
+          } catch (error) {
+            console.log(error);
+            toast.error('Failed to terminate session');
+          }
+          finally{
+            toast.dismiss(toastId);
+          }
+        }
       })
     };
   },
 });
 
-export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyUserMutation } = apiSlice;
+export const { useGetUserProfileQuery, useLoginMutation, useSignUpMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyUserMutation, useGetUserSessionsQuery, useTerminateSessionMutation } = apiSlice;
 export default apiSlice;
