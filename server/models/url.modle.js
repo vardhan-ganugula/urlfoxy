@@ -24,7 +24,7 @@ const urlSchema = new Schema({
     },
     clickLimit: {
         type: Number,
-        default: 0,
+        default: 10000,
     },
     clickCount: {
         type: Number,
@@ -49,6 +49,7 @@ const urlSchema = new Schema({
     password: {
         type: String,
         default: null,
+        select: false,
     },
     domain : {
         type : String,
