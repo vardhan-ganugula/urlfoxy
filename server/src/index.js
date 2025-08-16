@@ -13,6 +13,8 @@ import { DomainRouter } from "../routes/domains.route.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import linkRoute from "../routes/link.route.js";
+import { urlForward } from "../controllers/link.controller.js";
+import { groupRoute } from "../routes/group.route.js";
 
 config();
 connectDB();
@@ -31,7 +33,9 @@ runEmailWorker();
 app.use("/api/auth", authRateLimit, authRoute);
 app.use("/api/user", authMiddleware, userRoute);
 app.use("/api/domains",authRateLimit, DomainRouter)
-app.use('/u', linkRoute);
+app.use("/api/link", authMiddleware, authRateLimit, linkRoute);
+app.use("/api/group", authMiddleware, authRateLimit, groupRoute);
+app.get('/u/:url', urlForward);
 
 if (ENVIRONMENT === "development") {
   app.get("/", (req, res) => {
